@@ -29,6 +29,8 @@ toggle1 = RED
 toggle2 = RED
 toggle3 = RED
 toggle4 = RED
+toggle5 = RED
+toggle6 = RED
 
 global lever1
 lever1 = False
@@ -38,15 +40,21 @@ global lever3
 lever3 = False
 global lever4
 lever4 = False
+global lever5
+lever5 = False
+global lever6
+lever6 = False
 
 leverWidth = 20
 leverHeight = 30
 leverY = 500
 
-lever1X = 120
-lever2X = 220
-lever3X = 320
-lever4X = 420
+lever1X = 80
+lever2X = 180
+lever3X = 280
+lever4X = 380
+lever5X = 480
+lever6X = 580
 
 cirRad = 10
 
@@ -60,11 +68,15 @@ def mouseClick():
     global lever2
     global lever3
     global lever4
+    global lever5
+    global lever6
 
     global toggle1
     global toggle2
     global toggle3
     global toggle4
+    global toggle5
+    global toggle6
     if (lever1X<coor[0]<(lever1X+leverWidth)):
         if (leverY<coor[1]<(leverY+leverHeight)):
             if (lever1 == False):
@@ -87,17 +99,17 @@ def mouseClick():
             else:
                 lever1 = False
                 toggle1 = RED
-            if (lever4 == False):
-                lever4 = True
-                toggle4 = GREEN
-            else:
-                lever4 = False
-                toggle4 = RED
-    if (lever3X < coor[0] < (lever3X + leverWidth)):
-        if (leverY < coor[1] < (leverY + leverHeight)):
             if (lever2 == False):
                 lever2 = True
                 toggle2 = GREEN
+            else:
+                lever2 = False
+                toggle2 = RED
+    if (lever3X < coor[0] < (lever3X + leverWidth)):
+        if (leverY < coor[1] < (leverY + leverHeight)):
+            if (lever6 == False):
+                lever6 = True
+                toggle6 = GREEN
             else:
                 lever2 = False
                 toggle2 = RED
@@ -109,22 +121,57 @@ def mouseClick():
                 toggle3 = RED
     if (lever4X < coor[0] < (lever4X + leverWidth)):
         if (leverY < coor[1] < (leverY + leverHeight)):
-            if (lever2 == False):
-                lever2 = True
-                toggle2 = GREEN
+            if (lever3 == False):
+                lever3 = True
+                toggle3 = GREEN
             else:
-                lever2 = False
-                toggle2 = RED
+                lever3 = False
+                toggle3 = RED
+            if (lever5 == False):
+                lever5 = True
+                toggle5= GREEN
+            else:
+                lever5 = False
+                toggle5 = RED
+            if (lever6 == False):
+                lever6 = True
+                toggle6 = GREEN
+            else:
+                lever6 = False
+                toggle6 = RED
+    if (lever5X < coor[0] < (lever5X + leverWidth)):
+        if (leverY < coor[1] < (leverY + leverHeight)):
+            if (lever6 == False):
+                lever6 = True
+                toggle6 = GREEN
+            else:
+                lever6 = False
+                toggle6 = RED
             if (lever4 == False):
                 lever4 = True
                 toggle4 = GREEN
             else:
                 lever4 = False
                 toggle4 = RED
+    if (lever6X < coor[0] < (lever6X + leverWidth)):
+        if (leverY < coor[1] < (leverY + leverHeight)):
+            if (lever5 == False):
+                lever5 = True
+                toggle5 = GREEN
+            else:
+                lever5 = False
+                toggle5 = RED
+            if (lever6 == False):
+                lever6 = True
+                toggle6 = GREEN
+            else:
+                lever6 = False
+                toggle6 = RED
 
+clock = pygame.time.Clock()
 
 while True:
-    pygame.time.delay(100)
+    clock.tick(FPS)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -143,6 +190,8 @@ while True:
     pygame.draw.rect(window, (255, 255, 255), (lever2X, leverY, leverWidth, leverHeight))
     pygame.draw.rect(window, (255, 255, 255), (lever3X, leverY, leverWidth, leverHeight))
     pygame.draw.rect(window, (255, 255, 255), (lever4X, leverY, leverWidth, leverHeight))
+    pygame.draw.rect(window, (255, 255, 255), (lever5X, leverY, leverWidth, leverHeight))
+    pygame.draw.rect(window, (255, 255, 255), (lever6X, leverY, leverWidth, leverHeight))
 
     pygame.draw.rect(window, (255,0,0), (x,y, width,height))
     pygame.draw.rect(window, (255, 0, 0), (x+500, y, width, height))
@@ -164,16 +213,9 @@ while True:
     pygame.draw.rect(window, (255, 255, 0), (lineX, lineY+300, lineWidth, lineHeight))
     pygame.draw.circle(window, toggle4, (x + 650, y + 307), cirRad, 0)
 
+    pygame.draw.circle(window, toggle5, (x + 650, y + 407), cirRad, 0)
+    pygame.draw.circle(window, toggle6, (x + 650, y + 507), cirRad, 0)
 
     pygame.display.update()
-
-    if (toggle1 == GREEN):
-        if (toggle2 == GREEN):
-            if (toggle3 == GREEN):
-                if (toggle4 == GREEN):
-                    myfont = pygame.font.SysFont("Arial", 60)
-                    label = myfont.render("You Win!", 1, (255, 255, 0))
-                    window.blit(label, (500, 450))
-                    pygame.display.update()
 
 pygame.quit()
