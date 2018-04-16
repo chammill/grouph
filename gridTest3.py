@@ -224,8 +224,6 @@ bookshelf_img = pygame.image.load(os.path.join(img_dir, "bookshelf-green.png")).
 
 
 
-for img in asteroid_list:
-    asteroid_imgs.append(pygame.image.load(os.path.join(img_dir, img)).convert())
 
 # sprite groups - game, mob, projectiles...
 game_sprites = pygame.sprite.Group()
