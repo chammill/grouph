@@ -37,13 +37,18 @@ window = pygame.display.set_mode((winWidth, winHeight))
 pygame.display.set_caption("Top Down RPG view")
 clock = pygame.time.Clock()
 
+
+
+
+
+
 # create a default player sprite for the game
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         # load ship image & scale to fit game window...
         self.image = pygame.transform.scale(char_img, (49, 37))
-        # set colorkey to remove black background for ship's rect
+        # set colorkey to remove white background for char's rect
         self.image.set_colorkey(WHITE)
         #check images and get rect...
         self.rect = self.image.get_rect()
@@ -63,13 +68,13 @@ class Player(pygame.sprite.Sprite):
 
         key_state = pygame.key.get_pressed()
         if key_state[pygame.K_a]:
-            self.speed_x = -5
+            self.speed_x = -4
         if key_state[pygame.K_d]:
-            self.speed_x = 5
+            self.speed_x = 4
         if key_state[pygame.K_w]:
-            self.speed_y = -5
+            self.speed_y = -4
         if key_state[pygame.K_s]:
-            self.speed_y = 5
+            self.speed_y = 4
         self.rect.x += self.speed_x
 
         if self.rect.right > winWidth:
@@ -107,12 +112,12 @@ class Player(pygame.sprite.Sprite):
                 self.rect.bottom = block.rect.top
             else:
                 self.rect.top = block.rect.bottom
-        
- 
 
 
 
-#wallll
+
+
+#wall
 class Wall(pygame.sprite.Sprite):
     """ Wall the player can run into. """
     def __init__(self, x, y, width, height):
@@ -128,6 +133,8 @@ class Wall(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
+
+
 
 
 
@@ -155,8 +162,6 @@ wall_list.add(wall)
 wall = Wall(775, 10, 25, 600)
 wall_list.add(wall)
 
-
-
 # top right desk 
 wall = Wall(470, 145, 60, 40)
 wall_list.add(wall)
@@ -181,10 +186,6 @@ all_sprite_list.add(wall)
 
 
 
-
-
-
-
 # create a bookshelf
 class Bookshelf(pygame.sprite.Sprite):
     def __init__(self):
@@ -200,6 +201,11 @@ class Bookshelf(pygame.sprite.Sprite):
         pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.centerx = winWidth / 3
         self.rect.bottom = winHeight - 20
+
+
+
+
+
 
 
 
@@ -220,9 +226,73 @@ bg_rect2 = bg_img2.get_rect()
 char_img = pygame.image.load(os.path.join(img_dir, "char1.png")).convert()
 # bookshelf
 bookshelf_img = pygame.image.load(os.path.join(img_dir, "bookshelf-green.png")).convert()
+#security camera spotlights
+security_spot = pygame.image.load(os.path.join(img_dir, "camera_spot.png")).convert()
 
 
 
+
+# create security spots
+class Security(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        # load ship image & scale to fit game window...
+        self.image = security_spot
+        # set colorkey to remove black background for ship's rect
+        self.image.set_colorkey(WHITE)
+        #check images and get rect...
+        self.rect = self.image.get_rect()
+        # set radius for circle bounding
+        self.radius = 2.5
+       # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
+        self.rect.centerx = x
+        self.rect.bottom = y
+        # speed along the x-axis
+        self.speed_x = 1
+        # speed along the y-axis
+        self.speed_y = 0
+        # check timer for last update to reverse
+        self.reverse_update = pygame.time.get_ticks()
+        self.time_elapsed_since_last_action = 0
+
+    def update(self):
+        self.rect.x += self.speed_x
+        self.rect.y += self.speed_y
+        # call reverse update
+        time_now = pygame.time.get_ticks()
+
+       
+        # dt is measured in milliseconds, therefore 250 ms = 0.25 seconds
+        if self.time_elapsed_since_last_action < 50:
+            self.time_elapsed_since_last_action += 1 
+        else:
+            self.time_elapsed_since_last_action = 0
+            self.reverse()
+
+    def reverse(self):  
+        if self.speed_x > 0:
+            self.speed_x = -1
+        else:
+            self.speed_x = 1    
+
+
+
+
+
+
+
+
+
+
+security_spot1 = Security(120, 140)
+security_spot2 = Security(365, 140)
+security_spot3 = Security(120, 240)
+security_spot4 = Security(120, 380)
+
+security_spot5 = Security(620, 140)
+
+security_spot6 = Security(465, 380)
+security_spot7 = Security(665, 380)
 
 
 # sprite groups - game, mob, projectiles...
@@ -231,24 +301,24 @@ mob_sprites = pygame.sprite.Group()
 projectiles = pygame.sprite.Group()
 interactives = pygame.sprite.Group()
 maps = pygame.sprite.Group()
+security_spots1 = pygame.sprite.Group()
 # create player object
 player = Player()
 player.walls = wall_list
 all_sprite_list.add(player)
 
 
+
 bookshelf = Bookshelf()
+
+security_spots1.add(security_spot1, security_spot2, security_spot3, security_spot4, security_spot5, security_spot6, security_spot7)
+
 # add sprite to game's sprite group
-game_sprites.add(player, bookshelf)
+game_sprites.add(player, bookshelf, security_spots1)
+# add sprites for security spots
+
 # new bookshelf group
 interactives.add(bookshelf)
-# loop through enemy objects
-# for i in range(10):
-#    mob = Mob()
-    # add to game_sprites group to get object updated
-#    game_sprites.add(mob)
-    # add to mob_sprites group - use for collision detection &c.
-#    mob_sprites.add(mob)
 
 # define interAction
 def interAction():
@@ -264,8 +334,9 @@ def nextLvl():
 
 
     wall_list.empty()
+    game_sprites.remove(security_spots1)
 
-    
+
 
 
 
@@ -275,6 +346,7 @@ running = True
 while running:
     # check loop is running at set speed
     clock.tick(FPS)
+
     # 'processing' inputs (events)
     for event in EVENTS.get():
         # check keyboard events - keydown
@@ -294,20 +366,11 @@ while running:
     game_sprites.update()
 
 
-    # add check for sprite group collide with another sprite group - projectiles hitting enemy objects - use True to delete sprites from each group...
-    collisions = pygame.sprite.groupcollide(mob_sprites, projectiles, True, True)
-    # add more mobs for those hit and deleted by projectiles
-    for collision in collisions:
-        mob = Mob()
-        game_sprites.add(mob)
-        mob_sprites.add(mob)
 
-
-        
-    # add check for collision - bookshelf and player sprites (False = hit object is not deleted from game window)
+       
+    # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
     collisions = pygame.sprite.spritecollide(player, interactives, True, pygame.sprite.collide_circle)
     # check collisions for game window
-    hi = "hithere"
     if collisions:
         interaction = "bookshelf"
         # draw
@@ -321,6 +384,12 @@ while running:
         interaction = "none"
         # draw
         window.fill(BLACK)
+
+
+    # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
+    collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
+    if collisions:
+        print('gotcha')
 
     # draw background image - specify image file and rect to load image    
     window.blit(bg_img, bg_rect)
