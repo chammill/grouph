@@ -1,22 +1,23 @@
 import pygame
+import pygame.event as EVENTS
 
 
 
 pygame.init()
 color = pygame.Color
 IntroBackground = pygame.image.load('gameBackground.png')
-
+gameIntroBackground = pygame.image.load('introBack.jpg')
 display_width = 800
 display_height = 600
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('S.E.E.D')
 clock = pygame.time.Clock()
 smallText = pygame.font.Font("freesansbold.ttf",20)
-titleFont = pygame.font.match_font('')
-
-#agencyfb
-
-
+dialogueBox = pygame.draw.rect(gameDisplay,color('white'),(50,400,700,200))
+moralResponse1 = 0
+moralResponse2 = 0
+moralResponse3 = 0
+moralResponse4 = 0
 def quitGame():
     pygame.quit()
     quit()
@@ -24,17 +25,17 @@ def quitGame():
 def fade(width,height):
     fade = pygame.Surface((width,height))
     fade.fill((0,0,0))
-    clock.tick(15)
+    clock.tick(20)
     for alpha in range(0,300):
         fade.set_alpha(alpha)
         redrawGameDisplay()
         gameDisplay.blit(fade, (0,0))
         pygame.display.update()
-        pygame.time.delay(20)
+        pygame.time.delay(29)
 
 def redrawGameDisplay():
     wallpaper(IntroBackground, 0, 0)
-    message_display('S.E.E.D',titleFont,115,color('blue'),display_width,display_height,True)
+    message_display('S.E.E.D','freesansbold.ttf',115,color('blue'),display_width,display_height,True)
 
 
 def button(msg,x,y,w,h,ic,ac,action=None,FADE=None):
@@ -59,7 +60,38 @@ def button(msg,x,y,w,h,ic,ac,action=None,FADE=None):
     butRect.center = ((x + (w/2)), (y + (h/2)))
     gameDisplay.blit(butSurf,butRect)
 
+def continueDialogue():
+    pygame.display.update()
+    stop = 1
+    while stop > 0:
+        for event in EVENTS.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    stop = 0
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
 
+
+
+def moralDialogue(moralEvent=None):
+    pygame.display.update()
+    stop = 1
+    while stop > 0:
+        for event in EVENTS.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_1:
+                    #moralEvent(1)
+                    print("1")
+                elif event.key == pygame.K_2:
+                    #moralEvent(2)
+                    print('2')
+                elif event.key == pygame.K_3:
+                    #moralEvent(3)
+                    print('3')
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
 
 def wallpaper(background,x,y):
     gameDisplay.blit(background,(x,y))
@@ -75,25 +107,48 @@ def message_display(text,FONT,size,color,xLocation,yLocation,center=None):
     TextSurf, TextRect = text_objects(text, largeText,color)
     if center != None:
         TextRect.center = ((xLocation/2,yLocation/3))
-    gameDisplay.blit(TextSurf, TextRect)
-
+        gameDisplay.blit(TextSurf, TextRect)
     pygame.display.update()
 
 
-def getText(linesSkip=None,lineSize=None,lineNumber=None):
-    with open('Story.txt', 'r') as f:
-        f_contents = []
-        if linesSkip != None:
-            f_contents = f.readlines(linesSkip)
-            f_contents = f.read(lineSize)
-        elif lineNumber != None:
-            f_contents = f.readlines(lineNumber)
-        else:
-            f_contents = f.read(lineSize)
+def getText(lineStart,lineEnd):
+    f = open("Story.txt", 'r')
+    lines = f.readlines()
+    f.close()
+    story = []
 
-        msg = [str(elem)for elem in f_contents]
+    for lineNumber in range(lineStart, lineEnd):
+        story.append(lines[lineNumber])
 
-        return " ".join(msg)
+    return story
+
+
+def displayDialogue(story):
+
+    basicFont = pygame.font.SysFont(None, 20)
+
+    text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
+    textrect = text.get_rect()
+    textrect.centerx += 55
+    textrect.centery += 390
+
+    pygame.draw.rect(gameDisplay, color('white'), (50, 400, 700, 150))
+
+    for line in story:
+        # each i has a newline character, so by i[:-1] we will get rid of it
+        text = basicFont.render(line[:-1], True, (0, 0, 0), (255, 255, 255))
+        # by changing the y coordinate each i from lines will appear just
+        # below the previous i
+        textrect.centery += 15
+        gameDisplay.blit(text, textrect)
+
+
+
+
+
+
+
+
 
 
 def mainMenu():
@@ -106,13 +161,10 @@ def mainMenu():
                 quitGame()
         gameDisplay.fill(color("blue"))
         wallpaper(IntroBackground,0,0)
-        message_display('S.E.E.D', titleFont, 115,color('blue'),display_width,display_height,True)
+        message_display('S.E.E.D', 'freesansbold.ttf', 115,color('blue'),display_width,display_height,True)
 
-        button("Start", 350,300,100,50,color("forestgreen"),color("green"),gameIntro,True)
+        button("Start", 350,300,100,50,color("forestgreen"),color("green"),gameIntro)
         button("Quit", 350, 400, 100, 50, color("darkred"), color("red"),quitGame)
-
-
-
 
         pygame.display.update()
         clock.tick(15)
@@ -124,29 +176,152 @@ def gameIntro():
             if event.type == pygame.QUIT:
                  pygame.quit()
                  quit()
+            gameDisplay.fill(color("green"))
+            wallpaper(gameIntroBackground,0,0)
 
-            gameDisplay.fill(color("white"))
-            message = getText(None, 30, None)
-            message_display(message, 'freesansbold.ttf', 12, color('black'), 300 , 200)
 
-            pygame.display.update()
+            opening = getText(0,5)
+            displayDialogue(opening)
+            continueDialogue()
+
+            opening = getText(6,10)
+            displayDialogue(opening)
+            continueDialogue()
+
+            opening = getText(11, 15)
+            displayDialogue(opening)
+            continueDialogue()
+
+            dialogue = getText(22, 25)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(26, 27)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(28, 30)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(31, 32)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(33, 34)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(35, 36)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            #LobbyLevel
+            dialogue = getText(41, 42)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(43, 44)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(45, 48)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(52,53)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(54,55)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(56, 57)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(58, 59)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(60, 63)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(64, 65)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+            dialogue = getText(66, 67)
+            displayDialogue(dialogue)
+            continueDialogue()
+
+
+
+
+            moralDialogue()
+
+
+
             clock.tick(30)
 
 
 
 
-def game_loop():
-    game = True
 
-    while game:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                 pygame.quit()
-                 quit()
-
-            gameDisplay.fill(color("white"))
-            pygame.display.update()
-            clock.tick(30)
 
 
 mainMenu()
