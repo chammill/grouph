@@ -462,7 +462,6 @@ while True:
     # 'updating' the game
     # update all game sprites
     game_sprites.update()
-    # draw
     # 'rendering' to the window
     window.fill(BLACK)
     window.blit(BackGround.image, BackGround.rect)
