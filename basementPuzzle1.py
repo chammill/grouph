@@ -27,6 +27,10 @@ global lever3
 lever3 = False
 global lever4
 lever4 = False
+global lever5
+lever5 = False
+global lever6
+lever6 = False
 
 #lever coordinates
 leverWidth = 60
@@ -34,19 +38,21 @@ leverHeight = 70
 leverY = 500
 
 lever1X = 75
-lever2X = 200
-lever3X = 325
-lever4X = 450
-
+lever2X = 175
+lever3X = 275
+lever4X = 375
+lever5X = 475
+lever6X = 575
 
 #light coordinates
 lightX = 675
 
-light1Y = 45
-light2Y = 160
-light3Y = 275
-light4Y = 395
-
+light1Y = 15
+light2Y = 90
+light3Y = 170
+light4Y = 245
+light5Y = 320
+light6Y = 400
 
 #light truths
 global toggle1
@@ -57,6 +63,10 @@ global toggle3
 toggle3 = False
 global toggle4
 toggle4 = False
+global toggle5
+toggle5 = False
+global toggle6
+toggle6 = False
 
 # game assets
 game_dir = os.path.dirname(__file__)
@@ -176,29 +186,36 @@ def gameExit():
 
 # game sprite group
 game_sprites = pygame.sprite.Group()
-
-#lever
+# create player object
+#player = Player()
 leverOne = Lever(lever1X,leverY)
 leverTwo = Lever(lever2X,leverY)
 leverThree = Lever(lever3X,leverY)
 leverFour = Lever(lever4X,leverY)
+leverFive = Lever(lever5X,leverY)
+leverSix = Lever(lever6X,leverY)
 # add sprite to game's sprite group
 #game_sprites.add(player)
 game_sprites.add(leverOne)
 game_sprites.add(leverTwo)
 game_sprites.add(leverThree)
 game_sprites.add(leverFour)
+game_sprites.add(leverFive)
+game_sprites.add(leverSix)
 
-#light
 lightOne = Light(lightX,light1Y)
 lightTwo = Light(lightX,light2Y)
 lightThree = Light(lightX,light3Y)
 lightFour = Light(lightX,light4Y)
+lightFive = Light(lightX,light5Y)
+lightSix = Light(lightX,light6Y)
 
 game_sprites.add(lightOne)
 game_sprites.add(lightTwo)
 game_sprites.add(lightThree)
 game_sprites.add(lightFour)
+game_sprites.add(lightFive)
+game_sprites.add(lightSix)
 
 def mouseClick():
     coor = pygame.mouse.get_pos()
@@ -206,77 +223,189 @@ def mouseClick():
     global lever2
     global lever3
     global lever4
+    global lever5
+    global lever6
     global toggle1
     global toggle2
     global toggle3
     global toggle4
+    global toggle5
+    global toggle6
     if (lever1X < coor[0] < (lever1X+leverWidth) and lever1 == False and leverY < coor[1] < (leverY + leverHeight)):
         leverOne.switchUp()
         lever1 = True
-        lightFour.checkTValue(toggle4)
         lightThree.checkTValue(toggle3)
-        if (toggle4==True):
-            toggle4=False
-        else :
-            toggle4=True
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
         if (toggle3==True):
             toggle3=False
         else :
             toggle3=True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
     elif  (lever1X < coor[0] < (lever1X+leverWidth) and lever1==True and leverY < coor[1] < (leverY + leverHeight)):
         leverOne.switchDown()
         lever1 = False
-        lightFour.checkTValue(toggle4)
         lightThree.checkTValue(toggle3)
-        if (toggle4==True):
-            toggle4=False
-        else :
-            toggle4=True
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
         if (toggle3==True):
             toggle3=False
         else :
             toggle3=True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
     if (lever2X < coor[0] < (lever2X+leverWidth) and lever2 == False and leverY < coor[1] < (leverY + leverHeight)):
         leverTwo.switchUp()
         lever2 = True
         lightOne.checkTValue(toggle1)
-        lightTwo.checkTValue(toggle2)
-        lightFour.checkTValue(toggle4)
-        if (toggle4 == True):
-            toggle4 = False
-        else:
-            toggle4 = True
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
         if (toggle1==True):
             toggle1=False
         else :
             toggle1=True
-        if (toggle2==True):
-            toggle2=False
+        if (toggle5==True):
+            toggle5=False
         else :
-            toggle2=True
+            toggle5=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
     elif  (lever2X < coor[0] < (lever2X+leverWidth) and lever2==True and leverY < coor[1] < (leverY + leverHeight)):
         leverTwo.switchDown()
         lever2 = False
         lightOne.checkTValue(toggle1)
-        lightTwo.checkTValue(toggle2)
-        lightFour.checkTValue(toggle4)
-        if (toggle4 == True):
-            toggle4 = False
-        else:
-            toggle4 = True
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
         if (toggle1==True):
             toggle1=False
         else :
             toggle1=True
-        if (toggle2==True):
-            toggle2=False
+        if (toggle5==True):
+            toggle5=False
         else :
-            toggle2=True
+            toggle5=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
     if (lever3X < coor[0] < (lever3X+leverWidth) and lever3 == False and leverY < coor[1] < (leverY + leverHeight)):
         leverThree.switchUp()
         lever3 = True
-        lightThree.checkTValue(toggle3)
+        lightOne.checkTValue(toggle1)
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    elif  (lever3X < coor[0] < (lever3X+leverWidth) and lever3==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchDown()
+        lever3 = False
+        lightOne.checkTValue(toggle1)
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    if (lever4X < coor[0] < (lever4X+leverWidth) and lever4 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchUp()
+        lever4 = True
         lightTwo.checkTValue(toggle2)
+        lightFour.checkTValue(toggle4)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+    elif  (lever4X < coor[0] < (lever4X+leverWidth) and lever4==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchDown()
+        lever4 = False
+        lightTwo.checkTValue(toggle2)
+        lightFour.checkTValue(toggle4)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+    if (lever5X < coor[0] < (lever5X+leverWidth) and lever5 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFive.switchUp()
+        lever5 = True
+        lightThree.checkTValue(toggle3)
+        lightFour.checkTValue(toggle4)
+        lightFive.checkTValue(toggle5)
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+        if (toggle4==True):
+            toggle4=False
+        else :
+            toggle4=True
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+    elif  (lever5X < coor[0] < (lever5X+leverWidth) and lever5==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFive.switchDown()
+        lever5 = False
+        lightThree.checkTValue(toggle3)
+        lightFour.checkTValue(toggle4)
+        lightFive.checkTValue(toggle5)
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+        if (toggle4==True):
+            toggle4=False
+        else :
+            toggle4=True
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+    if (lever6X < coor[0] < (lever6X+leverWidth) and lever6 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverSix.switchUp()
+        lever6 = True
+        lightTwo.checkTValue(toggle2)
+        lightThree.checkTValue(toggle3)
         if (toggle2 == True):
             toggle2 = False
         else:
@@ -285,45 +414,19 @@ def mouseClick():
             toggle3=False
         else :
             toggle3=True
-    elif  (lever3X < coor[0] < (lever3X+leverWidth) and lever3==True and leverY < coor[1] < (leverY + leverHeight)):
-        leverThree.switchDown()
-        lever3 = False
-        lightThree.checkTValue(toggle3)
+    elif  (lever6X < coor[0] < (lever6X+leverWidth) and lever6==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverSix.switchDown()
+        lever6 = False
         lightTwo.checkTValue(toggle2)
+        lightThree.checkTValue(toggle3)
         if (toggle2 == True):
             toggle2 = False
         else:
             toggle2 = True
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-    if (lever4X < coor[0] < (lever4X+leverWidth) and lever4 == False and leverY < coor[1] < (leverY + leverHeight)):
-        leverFour.switchUp()
-        lever4 = True
-        lightThree.checkTValue(toggle3)
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-    elif  (lever4X < coor[0] < (lever4X+leverWidth) and lever4==True and leverY < coor[1] < (leverY + leverHeight)):
-        leverFour.switchDown()
-        lever4 = False
-        lightThree.checkTValue(toggle3)
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, image_file, location):
@@ -332,7 +435,7 @@ class Background(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.left, self.rect.top = location
 
-BackGround = Background('elevator-circuit-draft.png', [0,0])
+BackGround = Background('elevator-circuit-draft-6.png', [0,0])
 
 mouse1 = pygame.mouse.get_pressed()
 
@@ -354,7 +457,6 @@ while True:
             gameExit()
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouseClick()
-
 
 
     # 'updating' the game
