@@ -470,7 +470,20 @@ security_spot7 = Security(665, 380)
 
 #Next Level Interactions
 lobbyLevelPart2 = Bookshelf(450,590)
-elevatorDoor = Bookshelf(450,590)
+elevatorDoor = Bookshelf(450,595)
+elevatorDoorLeaving = Bookshelf(350,300)
+bathroomDoor = Bookshelf(50,300)
+bathroomDoorExit = Bookshelf(615,300)
+officeEntrance = Bookshelf(425,200)
+officeExit = Bookshelf(450,595)
+elevatorDoorToBasement = Bookshelf(425,575)
+basementDoorOneCorrect = Bookshelf(425,200)
+basementDoorTwoCorrect = Bookshelf(700,475)
+basementDoorTwoWrong = Bookshelf(200,100)
+basementDoorThree = Bookshelf(425,200)
+
+#Panels
+elevatorPanel = Bookshelf(450,300)
 
 # sprite groups - game, mob, projectiles...
 playerColl = pygame.sprite.Group()
@@ -487,32 +500,36 @@ security_spots1 = pygame.sprite.Group()
 playerList =[]
 playerlobbyPart1 = Player(25,280)
 playerlobbyPart2 = Player(400,150)
+playerelevatorLevel = Player(400,350)
+playerWaitingRoomOne = Player(425,575)
+playerBathroom = Player(600,300)
+playerWaitingRoomTwo = Player(50,300)
+playerOffice = Player(400,550)
+playerWaitingRoomThree = Player(400,200)
+playerBasementOne = Player(400,590)
+playerBasementTwo = Player(50,300)
+playerBasementThree = Player(50,500)
+playerFinal = Player(50,500)
 
-playerelevatorLevel = Player(400,300)
-'''
-playerWaitingRoomOne = Player()
-playerBathroom = Player()
-playerWaitingRoomTwo = Player()
-playerOffice = Player()
-playerWaitingRoomThree = Player()
-playerBasementOne = Player()
-playerBasementTwo = Player()
-playerBasementThree = Player()
-playerFinal = Player()
-playerList.append(playerlobbyPart1,playerlobbyPart2,playerelevatorLevel,
-                  playerWaitingRoomOne,playerBasementTwo,playerBathroom,
-                  playerWaitingRoomThree,playerBasementOne,playerBasementTwo,
-                  playerBasementThree,playerFinal)
-'''
 
 playerList.append(playerlobbyPart1)
 playerList.append(playerlobbyPart2)
+playerList.append(playerelevatorLevel)
+playerList.append(playerWaitingRoomOne)
+playerList.append(playerBathroom)
+playerList.append(playerWaitingRoomTwo)
+playerList.append(playerWaitingRoomThree)
+playerList.append(playerOffice)
+playerList.append(playerBasementOne)
+playerList.append(playerBasementTwo)
+playerList.append(playerBasementThree)
+playerList.append(playerFinal)
 
 for player in playerList:
     player.walls = wall_list
     all_sprite_list.add(player)
 
-playerColl.add(playerlobbyPart1)
+
 
 
 scientist = Scientist()
@@ -528,7 +545,13 @@ game_sprites.add(playerlobbyPart1, scientist)
 # add sprites for security spots
 
 # new bookshelf group
+
 interactives.add(lobbyLevelPart2)
+interactives.add(elevatorDoor)
+
+
+
+
 
 
 # define interAction
@@ -628,6 +651,7 @@ def nextLvl():
             if event.type == pygame.QUIT:
                 gameExit()
 
+
         keys = pygame.key.get_pressed()
         mouse1 = pygame.mouse.get_pressed()
         # pygame.mouse.set_visible()
@@ -677,7 +701,7 @@ def nextLvl():
                         ## add to another level function
                         miniGame1 = False
                         running = True
-                        game_sprites.add(security_spots1)
+
 
 
 
@@ -806,7 +830,7 @@ def lobbyLevel():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "lobby1New.png")).convert()
     test = False
-    RunThroughs = 0
+
     running = True
     # create game loop
     while running:
@@ -830,7 +854,7 @@ def lobbyLevel():
         # 'updating' the game
         # update all game sprites
         game_sprites.update()
-        interactives.update()
+        
         # add check fif cor collision - bookshelf and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerlobbyPart1, interactives, True, pygame.sprite.collide_circle)
         # check collisions for game window
@@ -845,8 +869,8 @@ def lobbyLevel():
             game_sprites.remove(playerlobbyPart1)
             game_sprites.add(playerlobbyPart2)
             interactives.add(elevatorDoor)
-            interactives.remove(lobbyLevelPart2)
-            '''test = True'''
+
+
 
 
         else:
@@ -859,24 +883,23 @@ def lobbyLevel():
         if collisions:
             print('gotcha')
 
-        '''if test == True:
-            interactives.add(elevatorDoor)
-            interactives.remove(lobbyLevelPart2)
-        test = False'''
-
 
         collisions = pygame.sprite.spritecollide(playerlobbyPart2, interactives, True, pygame.sprite.collide_circle)
-
-
         if collisions:
-            running == False
+            running = False
+            print('gotcha')
+
         # draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
 
         interactives.update()
 
+
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
+        frames = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
+        pygame.display.flip()
+        gameDisplay.blit(frames, (50, 50))
         # update the display window...
         pygame.display.update()
 
@@ -886,7 +909,6 @@ def elevatorLevel():
     bg_img = pygame.image.load(os.path.join(img_dir, "elevatorFinal.png")).convert()
     game_sprites.remove(playerlobbyPart2)
     game_sprites.add(playerelevatorLevel)
-    interactives.remove(elevatorDoor)
 
     running = True
     # create game loop
@@ -921,7 +943,7 @@ def elevatorLevel():
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
             nextLvl()
-
+            interactives.add(elevatorDoorLeaving)
 
         else:
             interaction = "none"
@@ -929,9 +951,11 @@ def elevatorLevel():
             gameDisplay.fill(BLACK)
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
+        collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
         if collisions:
-            print('gotcha')
+            running = False
+
+
 
         # draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
@@ -946,6 +970,9 @@ def elevatorLevel():
 def waitingRoomLevelOne():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
+    game_sprites.add(playerWaitingRoomOne)
+    game_sprites.remove(playerelevatorLevel)
+    interactives.add(bathroomDoor)
 
     running = True
     # create game loop
@@ -972,20 +999,10 @@ def waitingRoomLevelOne():
         game_sprites.update()
 
         # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, interactives, True, pygame.sprite.collide_circle)
+        collisions = pygame.sprite.spritecollide(playerWaitingRoomOne, interactives, True, pygame.sprite.collide_circle)
         # check collisions for game window
         if collisions:
-            interaction = "bookshelf"
-            # add rect for bg - helps locate background
-            gameDisplay.fill(BLACK)
-            # draw background image - specify image file and rect to load image
-            nextLvl()
-
-
-        else:
-            interaction = "none"
-            # draw
-            gameDisplay.fill(BLACK)
+            running = False
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
@@ -1003,7 +1020,9 @@ def waitingRoomLevelOne():
 def bathroomLevel():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
-
+    game_sprites.add(playerBathroom)
+    game_sprites.remove(playerWaitingRoomOne)
+    interactives.add(bathroomDoorExit)
     running = True
     # create game loop
     while running:
@@ -1029,7 +1048,7 @@ def bathroomLevel():
         game_sprites.update()
 
         # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, interactives, True, pygame.sprite.collide_circle)
+        collisions = pygame.sprite.spritecollide(playerBathroom, interactives, True, pygame.sprite.collide_circle)
         # check collisions for game window
         if collisions:
             interaction = "bookshelf"
@@ -1515,8 +1534,9 @@ def ending():
 
 
 #mainMenu()
-lobbyLevel()
-elevatorLevel()
+#lobbyLevel()
+#interactives.add(elevatorPanel)
+#elevatorLevel()
 #waitingRoomLevelOne()
 #bathroomLevel()
 #waitingRoomLevelTwo()
