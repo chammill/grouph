@@ -161,7 +161,7 @@ def getText(lineStart,lineEnd):
     return story
 
 
-def displayDialogue(story):
+def displayDialogue(story,pos=None):
 
     basicFont = pygame.font.SysFont(None, 20)
 
@@ -170,7 +170,22 @@ def displayDialogue(story):
     textrect.centerx += 55
     textrect.centery += 390
 
-    pygame.draw.rect(gameDisplay, color('white'), (50, 400, 700, 150))
+    if pos == None:
+        pygame.draw.rect(gameDisplay, color('white'), (50, 400, 700, 100))
+        text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
+        textrect = text.get_rect()
+        textrect.centerx += 55
+        textrect.centery += 390
+
+    else:
+        text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
+        textrect = text.get_rect()
+        textrect.centerx += 55
+        textrect.centery += 40
+
+        pygame.draw.rect(gameDisplay, color('white'), (50, 50, 700, 100))
+
+
 
     for line in story:
         # each i has a newline character, so by i[:-1] we will get rid of it
@@ -179,7 +194,7 @@ def displayDialogue(story):
         # below the previous i
         textrect.centery += 15
         gameDisplay.blit(text, textrect)
-
+    '''gameDisplay.blit(contHint, textrect)'''
 
 #
 
@@ -225,15 +240,10 @@ global lever6X
 
 
 lever1 = False
-
 lever2 = False
-
 lever3 = False
-
 lever4 = False
-
 lever5 = False
-
 lever6 = False
 
 
@@ -1327,13 +1337,447 @@ def mouseClickBathroom():
         else :
             toggle6=True
 
+def basementPuzzleOne():
+    BackGround = Background('elevator-circuit-draft-6.png', [0, 0])
+
+    # check loop is running at set speed
+    clock.tick(FPS)
+    global toggle1
+    global toggle2
+    global toggle3
+    global toggle4
+    global toggle5
+    global toggle6
+
+    global lever1
+    global lever2
+    global lever3
+    global lever4
+    global lever5
+    global lever6
+
+    game_sprites.empty()
+
+    game_sprites.add(leverOne)
+    game_sprites.add(leverTwo)
+    game_sprites.add(leverThree)
+    game_sprites.add(leverFour)
+    game_sprites.add(leverFive)
+    game_sprites.add(leverSix)
+
+    game_sprites.add(lightOne)
+    game_sprites.add(lightTwo)
+    game_sprites.add(lightThree)
+    game_sprites.add(lightFour)
+    game_sprites.add(lightFive)
+    game_sprites.add(lightSix)
 
 
 
+
+    running = True
+    while running:
+        for event in EVENTS.get():
+            # check keyboard events - keydown
+            if event.type == pygame.KEYDOWN:
+
+                # check for ESCAPE key
+                if event.key == pygame.K_ESCAPE:
+                    gameExit()
+
+            # check click on window exit button
+            if event.type == pygame.QUIT:
+                gameExit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouseClickBasementOne()
+
+        # 'updating' the game
+        # update all game sprites
+        game_sprites.update()
+        # 'rendering' to the window
+        gameDisplay.fill(BLACK)
+        gameDisplay.blit(BackGround.image, BackGround.rect)
+        game_sprites.draw(gameDisplay)
+        # update the display window...
+        pygame.display.update()
+        if (toggle1 == True):
+            if (toggle2 == True):
+                if (toggle3 == True):
+                    if (toggle4 == True):
+                        if (toggle5 == True):
+                            if (toggle6 == True):
+                                running = False
+                                game_sprites.empty()
+                                game_sprites.add(playerBathroom)
+
+def mouseClickBasementOne():
+    coor = pygame.mouse.get_pos()
+    global lever1
+    global lever2
+    global lever3
+    global lever4
+    global lever5
+    global lever6
+    global toggle1
+    global toggle2
+    global toggle3
+    global toggle4
+    global toggle5
+    global toggle6
+    if (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverOne.switchUp()
+        lever1 = True
+        lightThree.checkTValue(toggle3)
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    elif (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == True and leverY < coor[1] < (leverY + leverHeight)):
+        leverOne.switchDown()
+        lever1 = False
+        lightThree.checkTValue(toggle3)
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    if (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverTwo.switchUp()
+        lever2 = True
+        lightOne.checkTValue(toggle1)
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    elif (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == True and leverY < coor[1] < (leverY + leverHeight)):
+        leverTwo.switchDown()
+        lever2 = False
+        lightOne.checkTValue(toggle1)
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    if (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchUp()
+        lever3 = True
+        lightOne.checkTValue(toggle1)
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    elif (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == True and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchDown()
+        lever3 = False
+        lightOne.checkTValue(toggle1)
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    if (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchUp()
+        lever4 = True
+        lightTwo.checkTValue(toggle2)
+        lightFour.checkTValue(toggle4)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+    elif (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchDown()
+        lever4 = False
+        lightTwo.checkTValue(toggle2)
+        lightFour.checkTValue(toggle4)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+    if (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFive.switchUp()
+        lever5 = True
+        lightThree.checkTValue(toggle3)
+        lightFour.checkTValue(toggle4)
+        lightFive.checkTValue(toggle5)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+    elif (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFive.switchDown()
+        lever5 = False
+        lightThree.checkTValue(toggle3)
+        lightFour.checkTValue(toggle4)
+        lightFive.checkTValue(toggle5)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+    if (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverSix.switchUp()
+        lever6 = True
+        lightTwo.checkTValue(toggle2)
+        lightThree.checkTValue(toggle3)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+    elif (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == True and leverY < coor[1] < (leverY + leverHeight)):
+        leverSix.switchDown()
+        lever6 = False
+        lightTwo.checkTValue(toggle2)
+        lightThree.checkTValue(toggle3)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+
+
+
+
+
+
+#Dialogue Cutscences
+def lobbyScenePartOne():
+
+    dialogue = getText(41, 42)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(43, 44)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(45, 48)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(49, 50)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(52, 53)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(54, 55)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(56, 57)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(58, 59)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(60, 63)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(64, 65)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+def lobbyScenePartTwo():
+
+    dialogue = getText(66, 67)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(68, 69)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(70, 71)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(72, 73)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(74,75)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(76, 77)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(78, 79)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(80, 81)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(82, 83)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(84, 85)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(86, 88)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+def elevatorScenePartOne():
+
+    dialogue = getText(117, 118)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(119, 121)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(122, 123)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(124, 125)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(126, 127)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(128, 129)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(130, 131)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(132, 133)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(134, 135)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(136, 137)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(138, 139)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(136, 137)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(136, 137)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(136, 137)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(136, 137)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
 
 def mainMenu():
-
-
 
     while gameIntroLoop:
         for event in pygame.event.get():
@@ -1352,7 +1796,7 @@ def mainMenu():
 
 
         pygame.display.update()
-        clock.tick(60)
+        clock.tick(30)
 
 def gameIntro():
     global gameIntroLoop
@@ -1370,39 +1814,39 @@ def gameIntro():
         gameDisplay.blit(frames, (50, 50))
 
         opening = getText(0, 5)
-        displayDialogue(opening)
+        displayDialogue(opening,'top')
         continueDialogue()
 
         opening = getText(6, 10)
-        displayDialogue(opening)
+        displayDialogue(opening, 'top')
         continueDialogue()
 
         opening = getText(11, 15)
-        displayDialogue(opening)
+        displayDialogue(opening, 'top')
         continueDialogue()
 
         dialogue = getText(22, 25)
-        displayDialogue(dialogue)
+        displayDialogue(dialogue, 'top')
         continueDialogue()
 
         dialogue = getText(26, 27)
-        displayDialogue(dialogue)
+        displayDialogue(dialogue, 'top')
         continueDialogue()
 
         dialogue = getText(28, 30)
-        displayDialogue(dialogue)
+        displayDialogue(dialogue, 'top')
         continueDialogue()
 
         dialogue = getText(31, 32)
-        displayDialogue(dialogue)
+        displayDialogue(dialogue, 'top')
         continueDialogue()
 
         dialogue = getText(33, 34)
-        displayDialogue(dialogue)
+        displayDialogue(dialogue, 'top')
         continueDialogue()
 
         dialogue = getText(35, 36)
-        displayDialogue(dialogue)
+        displayDialogue(dialogue, 'top')
         continueDialogue()
 
         game = False
@@ -1410,51 +1854,10 @@ def gameIntro():
 
 
 
-            # LobbyLevel
-            # dialogue = getText(41, 42)
-            # displayDialogue(dialogue)
-            # continueDialogue()
-
-            #dialogue = getText(43, 44)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-
-            #dialogue = getText(45, 48)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-            #
-            #dialogue = getText(52,53)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-            #
-            #dialogue = getText(54,55)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-
-            #dialogue = getText(56, 57)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-
-            #dialogue = getText(58, 59)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-
-            #dialogue = getText(60, 63)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-
-            #dialogue = getText(64, 65)
-            #displayDialogue(dialogue)
-            #continueDialogue()
-
-            #            fade(display_width,display_height)
-
-
-
 def lobbyLevel():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "lobby1New.png")).convert()
-    test = False
+    cutscene1 = True
 
     running = True
     # create game loop
@@ -1493,13 +1896,6 @@ def lobbyLevel():
             interactives.add(elevatorDoor)
 
 
-
-
-        else:
-            interaction = "none"
-            # draw
-            gameDisplay.fill(BLACK)
-
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerlobbyPart1, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
@@ -1516,6 +1912,10 @@ def lobbyLevel():
 
         interactives.update()
 
+        collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
+        if collisions:
+            if cutscene2 == True:
+                lobbyScenePartTwo()
 
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
@@ -1524,6 +1924,12 @@ def lobbyLevel():
         gameDisplay.blit(frames, (50, 50))
         # update the display window...
         pygame.display.update()
+
+        if cutscene1 == True:
+            cutscene1 = False
+            lobbyScenePartOne()
+            cutscene2 = 2
+
 
 
 def elevatorLevel():
@@ -1565,15 +1971,14 @@ def elevatorLevel():
             elevatorPuzzle()
             interactives.add(elevatorDoorLeaving)
 
-        else:
-            interaction = "none"
-            # draw
-            gameDisplay.fill(BLACK)
+
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
         if collisions:
             running = False
+
+
 
 
 
@@ -2205,10 +2610,57 @@ bathroomLevel()
 
 interactives.add(officeEntrance)
 waitingRoomLevelTwo()
-
 officeLevel()
 waitingRoomLevelThree()
-basementLevelOne()
+
+#lever coordinates for basementPuzzle
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 75
+lever2X = 175
+lever3X = 275
+lever4X = 375
+lever5X = 475
+lever6X = 575
+
+#light coordinates
+lightX = 675
+
+light1Y = 15
+light2Y = 90
+light3Y = 170
+light4Y = 245
+light5Y = 320
+light6Y = 400
+
+
+leverOne = Lever(lever1X, leverY)
+leverTwo = Lever(lever2X, leverY)
+leverThree = Lever(lever3X, leverY)
+leverFour = Lever(lever4X, leverY)
+leverFive = Lever(lever5X, leverY)
+leverSix = Lever(lever6X, leverY)
+
+lightOne = Light(lightX,light1Y)
+lightTwo = Light(lightX,light2Y)
+lightThree = Light(lightX,light3Y)
+lightFour = Light(lightX,light4Y)
+lightFive = Light(lightX,light5Y)
+lightSix = Light(lightX,light6Y)
+
+toggle1 = False
+toggle2 = False
+toggle3 = False
+toggle4 = False
+toggle5 = False
+toggle6 = False
+
+
+#basementPuzzleOne()
+
+
 basementLevelTwo()
 basementLevelThree()
 FinalBossRoom()
