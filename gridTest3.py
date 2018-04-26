@@ -115,12 +115,28 @@ class Player(pygame.sprite.Sprite):
         key_state = pygame.key.get_pressed()
         if key_state[pygame.K_a]:
             self.speed_x = -4
+            #change to facing left image
+            self.image = pygame.transform.scale(char_img_l, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
         if key_state[pygame.K_d]:
             self.speed_x = 4
+            #change to facing right image
+            self.image = pygame.transform.scale(char_img_r, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
         if key_state[pygame.K_w]:
             self.speed_y = -4
+            #change to facing up image
+            self.image = pygame.transform.scale(char_img_u, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
         if key_state[pygame.K_s]:
             self.speed_y = 4
+            #change to facing down image
+            self.image = pygame.transform.scale(char_img, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
         self.rect.x += self.speed_x
 
         if self.rect.right > winWidth:
@@ -293,6 +309,13 @@ bg_rect3 = bg_img2.get_rect()
 
 # player's character
 char_img = pygame.image.load(os.path.join(img_dir, "char1.png")).convert()
+# player's character facing right
+char_img_r = pygame.image.load(os.path.join(img_dir, "char1r.png")).convert()
+# player's character facing left
+char_img_l = pygame.image.load(os.path.join(img_dir, "char1l.png")).convert()
+# player's character facing up
+char_img_u = pygame.image.load(os.path.join(img_dir, "char1u.png")).convert()
+
 # bookshelf
 bookshelf_img = pygame.image.load(os.path.join(img_dir, "bookshelf-green.png")).convert()
 #security camera spotlights
@@ -473,7 +496,6 @@ def mouseClick():
 def nextLvl():
     
 
-    
     ## Remove the collision walls
     wall_list.empty()
     game_sprites.remove(security_spots1)
@@ -580,9 +602,8 @@ def nextLvl():
                     if (toggle4 == GREEN):
                         myfont = pygame.font.SysFont("Arial", 60)
                         label = myfont.render("You Win!", 1, (255, 255, 0))
-
                         window.blit(label, (500, 450))
-
+                        pygame.display.update()
 
 
                         ## add to another level function
@@ -595,8 +616,12 @@ def nextLvl():
 
 
                     
-                    
 
+
+
+
+    
+caught = False
 running = True
 # create game loop
 while running:
@@ -645,7 +670,11 @@ while running:
     # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
     collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
     if collisions:
-        print('gotcha')
+        running = False
+        caught = True
+
+
+
 
     # draw background image - specify image file and rect to load image    
     if level == 1:
@@ -655,8 +684,25 @@ while running:
 
 
 
+    while caught == True:
+        myfont = pygame.font.SysFont("Arial", 20)
+        label = myfont.render("Caught on camera! Press space to continue. Esc to exit", 1, (255, 255, 0))
+        window.blit(label, (100, 50))
+        pygame.display.flip()
 
-
+        
+        # 'processing' inputs (events)
+        for event in EVENTS.get():
+            # check keyboard events - keydown
+            if event.type == pygame.KEYDOWN:
+                # check for ESCAPE key
+                if event.key == pygame.K_ESCAPE:
+                    gameExit()
+                elif event.key == pygame.K_SPACE:
+                    print('hi')
+                    # fire laser beam...
+                    caught = False
+                    running = True
 
 
 
@@ -665,3 +711,14 @@ while running:
     game_sprites.draw(window)
     # update the display window...
     pygame.display.update()
+
+
+
+##
+
+
+
+
+
+                
+
