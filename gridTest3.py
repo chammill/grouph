@@ -327,7 +327,7 @@ scientist_img = pygame.image.load(os.path.join(img_dir, "scientist.png")).conver
 
 # create security spots
 class Security(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, flag):
         pygame.sprite.Sprite.__init__(self)
         # load ship image & scale to fit game window...
         self.image = security_spot
@@ -347,6 +347,7 @@ class Security(pygame.sprite.Sprite):
         # check timer for last update to reverse
         self.reverse_update = pygame.time.get_ticks()
         self.time_elapsed_since_last_action = 0
+        self.flag = flag
 
     def update(self):
         self.rect.x += self.speed_x
@@ -354,7 +355,7 @@ class Security(pygame.sprite.Sprite):
         # call reverse update
         time_now = pygame.time.get_ticks()
 
-       
+
         # dt is measured in milliseconds, therefore 250 ms = 0.25 seconds
         if self.time_elapsed_since_last_action < 50:
             self.time_elapsed_since_last_action += 1 
@@ -362,11 +363,19 @@ class Security(pygame.sprite.Sprite):
             self.time_elapsed_since_last_action = 0
             self.reverse()
 
-    def reverse(self):  
-        if self.speed_x > 0:
-            self.speed_x = -1
-        else:
-            self.speed_x = 1    
+    def reverse(self):
+        if self.flag == 1:
+            if self.speed_x > 0:            
+                self.speed_x = -1
+            else:
+                self.speed_x = 1
+
+        if self.flag == 2:
+            self.speed_x = 0
+            if self.speed_y > 0:            
+                self.speed_y = -1
+            else:
+                self.speed_y = 1
 
 
 
@@ -377,15 +386,15 @@ class Security(pygame.sprite.Sprite):
 
 
 
-security_spot1 = Security(120, 260)
-security_spot2 = Security(365, 260)
-security_spot3 = Security(120, 360)
-security_spot4 = Security(120, 500)
+security_spot1 = Security(120, 260, 1)
+security_spot2 = Security(365, 260, 2)
+security_spot3 = Security(120, 360, 1)
+security_spot4 = Security(120, 500, 2)
 
-security_spot5 = Security(620, 260)
+security_spot5 = Security(620, 260, 1)
 
-security_spot6 = Security(465, 500)
-security_spot7 = Security(665, 500)
+security_spot6 = Security(465, 500, 2)
+security_spot7 = Security(665, 500, 1)
 
 
 # sprite groups - game, mob, projectiles...
