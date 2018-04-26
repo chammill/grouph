@@ -193,8 +193,11 @@ MAGENTA = (255, 0, 255)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 YELLOW = (255, 255, 0)
+GREEN = (0, 255, 0)
 
-x = 30
+
+
+'''x = 30
 y = 40
 width = 20
 height = 20
@@ -204,35 +207,24 @@ block_size = 10
 lineX = 30
 lineY = 46
 lineWidth = 500
-lineHeight = 5
+lineHeight = 5'''
 
 
-GREEN = (0, 255, 0)
 
-toggle1 = RED
-toggle2 = RED
-toggle3 = RED
-toggle4 = RED
+
+global toggle1
+global toggle2
+global toggle3
+global toggle4
+
 
 global lever1
-lever1 = False
 global lever2
-lever2 = False
 global lever3
-lever3 = False
 global lever4
-lever4 = False
 
-leverWidth = 20
-leverHeight = 30
-leverY = 500
 
-lever1X = 120
-lever2X = 220
-lever3X = 320
-lever4X = 420
 
-cirRad = 10
 
 # initialise pygame settings and create game window
 interaction = "empty"
@@ -455,6 +447,138 @@ class Security(pygame.sprite.Sprite):
         else:
             self.speed_x = 1
 
+class Lever(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(img_dir, "lever-down.png")).convert()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect() #checks images and get rect...
+        self.rect.center = (display_width / 2, display_height / 2)
+        self.rect.x = x
+        self.rect.y = y
+        #x = 60 wide
+        #y = 70 height
+
+    def switchUp(self):
+        global lever1
+        global lever2
+        global lever3
+        global lever4
+        global lever5
+        global lever6
+        x = self.rect.x
+        y = self.rect.y
+        self.image = pygame.image.load(os.path.join(img_dir, "lever-middle.png")).convert()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()  # checks images and get rect...
+        self.rect.x = x
+        self.rect.y = y
+        self.image = pygame.image.load(os.path.join(img_dir, "lever-up.png")).convert()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()  # checks images and get rect...
+        self.rect.x = x
+        self.rect.y = y
+
+    def switchDown(self):
+        x = self.rect.x
+        y = self.rect.y
+        self.image = pygame.image.load(os.path.join(img_dir, "lever-middle.png")).convert()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()  # checks images and get rect...
+        self.rect.x = x
+        self.rect.y = y
+        self.image = pygame.image.load(os.path.join(img_dir, "lever-down.png")).convert()
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()  # checks images and get rect...
+        self.rect.x = x
+        self.rect.y = y
+
+
+
+
+
+
+
+#lever coordinates
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 75
+lever2X = 200
+lever3X = 325
+lever4X = 450
+
+lightRowOneY = 90
+lightRowTwoY = 205
+
+#Levers
+leverOne = Lever(lever1X,leverY)
+leverTwo = Lever(lever2X,leverY)
+leverThree = Lever(lever3X,leverY)
+leverFour = Lever(lever4X,leverY)
+
+leverFive = Lever(lever5X,leverY)
+leverSix = Lever(lever6X,leverY)
+
+class Light(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(img_dir, "red-light.png")).convert()
+        self.image.set_colorkey(WHITE)
+        self.rect = self.image.get_rect()  # checks images and get rect...
+        self.rect.center = (display_width / 2, display_height / 2)
+        self.rect.x = x
+        self.rect.y = y
+    def checkTValue(self,toggle):
+        if (toggle==False):
+            x = self.rect.x
+            y = self.rect.y
+            self.image = pygame.image.load(os.path.join(img_dir, "green-light.png")).convert()
+            self.image.set_colorkey(WHITE)
+            self.rect = self.image.get_rect()  # checks images and get rect...
+            self.rect.center = (display_width / 2, display_height / 2)
+            self.rect.x = x
+            self.rect.y = y
+        elif (toggle==True):
+            x = self.rect.x
+            y = self.rect.y
+            self.image = pygame.image.load(os.path.join(img_dir, "red-light.png")).convert()
+            self.image.set_colorkey(WHITE)
+            self.rect = self.image.get_rect()  # checks images and get rect...
+            self.rect.center = (display_width / 2, display_height / 2)
+            self.rect.x = x
+            self.rect.y = y
+
+#light coordinates
+lightX = 675
+lever1X = 75
+lever2X = 190
+lever3X = 320
+lever4X = 440
+lever5X = 560
+lever6X = 680
+light1Y = 45
+light2Y = 160
+light3Y = 275
+light4Y = 395
+
+
+
+#Lights
+lightOne = Light(lightX,light1Y)
+lightTwo = Light(lightX,light2Y)
+lightThree = Light(lightX,light3Y)
+lightFour = Light(lightX,light4Y)
+lightFive = Light(light2X, lightRowTwoY)
+lightSix = Light(light3X, lightRowTwoY)
+
+class Background(pygame.sprite.Sprite):
+    def __init__(self, image_file, location):
+        pygame.sprite.Sprite.__init__(self)  #call Sprite initializer
+        self.image = pygame.image.load(os.path.join(img_dir, image_file)).convert()
+        self.rect = self.image.get_rect()
+        self.rect.left, self.rect.top = location
 
 security_spot1 = Security(120, 140)
 security_spot2 = Security(365, 140)
@@ -484,6 +608,7 @@ basementDoorThree = Bookshelf(425,200)
 
 #Panels
 elevatorPanel = Bookshelf(450,300)
+bathroomPanel = Bookshelf(600,200)
 
 # sprite groups - game, mob, projectiles...
 playerColl = pygame.sprite.Group()
@@ -502,7 +627,7 @@ playerlobbyPart1 = Player(25,280)
 playerlobbyPart2 = Player(400,150)
 playerelevatorLevel = Player(400,350)
 playerWaitingRoomOne = Player(425,575)
-playerBathroom = Player(600,300)
+playerBathroom = Player(650,400)
 playerWaitingRoomTwo = Player(50,300)
 playerOffice = Player(400,550)
 playerWaitingRoomThree = Player(400,200)
@@ -533,7 +658,6 @@ for player in playerList:
 
 
 scientist = Scientist()
-lobbypart2 = Bookshelf(800,600)
 
 
 
@@ -547,7 +671,6 @@ game_sprites.add(playerlobbyPart1, scientist)
 # new bookshelf group
 
 interactives.add(lobbyLevelPart2)
-interactives.add(elevatorDoor)
 
 
 
@@ -557,8 +680,8 @@ interactives.add(elevatorDoor)
 # define interAction
 def interAction():
     print(interaction)
-    if interaction == "bookshelf":
-        nextLvl()
+
+
 
 
 def gameExit():
@@ -566,142 +689,371 @@ def gameExit():
     sys.exit()
 
 
+def mouseClickElevator():
+    coor = pygame.mouse.get_pos()
+    global lever1
+    global lever2
+    global lever3
+    global lever4
+    global toggle1
+    global toggle2
+    global toggle3
+    global toggle4
+    if (lever1X < coor[0] < (lever1X+leverWidth) and lever1 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverOne.switchUp()
+        lever1 = True
+        lightFour.checkTValue(toggle4)
+        lightThree.checkTValue(toggle3)
+        if (toggle4==True):
+            toggle4=False
+        else :
+            toggle4=True
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+    elif  (lever1X < coor[0] < (lever1X+leverWidth) and lever1==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverOne.switchDown()
+        lever1 = False
+        lightFour.checkTValue(toggle4)
+        lightThree.checkTValue(toggle3)
+        if (toggle4==True):
+            toggle4=False
+        else :
+            toggle4=True
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+    if (lever2X < coor[0] < (lever2X+leverWidth) and lever2 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverTwo.switchUp()
+        lever2 = True
+        lightOne.checkTValue(toggle1)
+        lightTwo.checkTValue(toggle2)
+        lightFour.checkTValue(toggle4)
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle1==True):
+            toggle1=False
+        else :
+            toggle1=True
+        if (toggle2==True):
+            toggle2=False
+        else :
+            toggle2=True
+    elif  (lever2X < coor[0] < (lever2X+leverWidth) and lever2==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverTwo.switchDown()
+        lever2 = False
+        lightOne.checkTValue(toggle1)
+        lightTwo.checkTValue(toggle2)
+        lightFour.checkTValue(toggle4)
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        if (toggle1==True):
+            toggle1=False
+        else :
+            toggle1=True
+        if (toggle2==True):
+            toggle2=False
+        else :
+            toggle2=True
+    if (lever3X < coor[0] < (lever3X+leverWidth) and lever3 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchUp()
+        lever3 = True
+        lightThree.checkTValue(toggle3)
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+    elif  (lever3X < coor[0] < (lever3X+leverWidth) and lever3==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchDown()
+        lever3 = False
+        lightThree.checkTValue(toggle3)
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+    if (lever4X < coor[0] < (lever4X+leverWidth) and lever4 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchUp()
+        lever4 = True
+        lightThree.checkTValue(toggle3)
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+    elif  (lever4X < coor[0] < (lever4X+leverWidth) and lever4==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchDown()
+        lever4 = False
+        lightThree.checkTValue(toggle3)
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+
+
+## Puzzle Level 1
+def elevatorPuzzle():
+    mouse1 = pygame.mouse.get_pressed()
+    BackGround = Background('elevator-circuit-draft.png', [0, 0])
+    game_sprites.empty()
+
+    game_sprites.add(lightOne)
+    game_sprites.add(lightTwo)
+    game_sprites.add(lightThree)
+    game_sprites.add(lightFour)
+
+    game_sprites.add(leverOne)
+    game_sprites.add(leverTwo)
+    game_sprites.add(leverThree)
+    game_sprites.add(leverFour)
+    running = True
+    # create game loop
+    while running:
+        # check loop is running at set speed
+        clock.tick(FPS)
+        # 'processing' inputs (events)
+        for event in EVENTS.get():
+            # check keyboard events - keydown
+            if event.type == pygame.KEYDOWN:
+
+                # check for ESCAPE key
+                if event.key == pygame.K_ESCAPE:
+                    gameExit()
+
+            # check click on window exit button
+            if event.type == pygame.QUIT:
+                gameExit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouseClickElevator()
+
+            # 'updating' the game
+            # update all game sprites
+        game_sprites.update()
+        # draw
+        # 'rendering' to the window
+        gameDisplay.fill(BLACK)
+        gameDisplay.blit(BackGround.image, BackGround.rect)
+        game_sprites.draw(gameDisplay)
+        # update the display window...
+        pygame.display.update()
+
+        if (toggle1 == True):
+            if (toggle2 == True):
+                if (toggle3 == True):
+                    if (toggle4 == True):
+                        pygame.display.update()
+                        running = False
+    game_sprites.empty()
+    game_sprites.add(playerelevatorLevel)
+
 def mouseClick():
     coor = pygame.mouse.get_pos()
     global lever1
     global lever2
     global lever3
     global lever4
-
+    global lever5
+    global lever6
     global toggle1
     global toggle2
     global toggle3
     global toggle4
-    if (lever1X < coor[0] < (lever1X + leverWidth)):
-        if (leverY < coor[1] < (leverY + leverHeight)):
-            if (lever1 == False):
-                lever1 = True
-                toggle1 = GREEN
-            else:
-                lever1 = False
-                toggle1 = RED
-            if (lever3 == False):
-                lever3 = True
-                toggle3 = GREEN
-            else:
-                lever3 = False
-                toggle3 = RED
-    if (lever2X < coor[0] < (lever2X + leverWidth)):
-        if (leverY < coor[1] < (leverY + leverHeight)):
-            if (lever1 == False):
-                lever1 = True
-                toggle1 = GREEN
-            else:
-                lever1 = False
-                toggle1 = RED
-            if (lever4 == False):
-                lever4 = True
-                toggle4 = GREEN
-            else:
-                lever4 = False
-                toggle4 = RED
-    if (lever3X < coor[0] < (lever3X + leverWidth)):
-        if (leverY < coor[1] < (leverY + leverHeight)):
-            if (lever2 == False):
-                lever2 = True
-                toggle2 = GREEN
-            else:
-                lever2 = False
-                toggle2 = RED
-            if (lever3 == False):
-                lever3 = True
-                toggle3 = GREEN
-            else:
-                lever3 = False
-                toggle3 = RED
-    if (lever4X < coor[0] < (lever4X + leverWidth)):
-        if (leverY < coor[1] < (leverY + leverHeight)):
-            if (lever2 == False):
-                lever2 = True
-                toggle2 = GREEN
-            else:
-                lever2 = False
-                toggle2 = RED
-            if (lever4 == False):
-                lever4 = True
-                toggle4 = GREEN
-            else:
-                lever4 = False
-                toggle4 = RED
+    global toggle5
+    global toggle6
+    if (lever1X < coor[0] < (lever1X+leverWidth) and lever1 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverOne.switchUp()
+        lever1 = True
+        lightOne.checkTValue(toggle1)
+        lightThree.checkTValue(toggle3)
+        if (toggle1==True):
+            toggle1=False
+        else :
+            toggle1=True
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+    elif  (lever1X < coor[0] < (lever1X+leverWidth) and lever1==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverOne.switchDown()
+        lever1 = False
+        lightOne.checkTValue(toggle1)
+        lightThree.checkTValue(toggle3)
+        if (toggle1==True):
+            toggle1=False
+        else :
+            toggle1=True
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+    if (lever2X < coor[0] < (lever2X+leverWidth) and lever2 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverTwo.switchUp()
+        lever2 = True
+        lightOne.checkTValue(toggle1)
+        lightTwo.checkTValue(toggle2)
+        if (toggle1==True):
+            toggle1=False
+        else :
+            toggle1=True
+        if (toggle2==True):
+            toggle2=False
+        else :
+            toggle2=True
+    elif  (lever2X < coor[0] < (lever2X+leverWidth) and lever2==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverTwo.switchDown()
+        lever2 = False
+        lightOne.checkTValue(toggle1)
+        lightTwo.checkTValue(toggle2)
+        if (toggle1==True):
+            toggle1=False
+        else :
+            toggle1=True
+        if (toggle2==True):
+            toggle2=False
+        else :
+            toggle2=True
+    if (lever3X < coor[0] < (lever3X+leverWidth) and lever3 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchUp()
+        lever3 = True
+        lightThree.checkTValue(toggle3)
+        lightSix.checkTValue(toggle6)
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    elif  (lever3X < coor[0] < (lever3X+leverWidth) and lever3==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverThree.switchDown()
+        lever3 = False
+        lightThree.checkTValue(toggle3)
+        lightSix.checkTValue(toggle6)
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    if (lever4X < coor[0] < (lever4X+leverWidth) and lever4 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchUp()
+        lever4 = True
+        lightThree.checkTValue(toggle3)
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    elif  (lever4X < coor[0] < (lever4X+leverWidth) and lever4==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFour.switchDown()
+        lever4 = False
+        lightThree.checkTValue(toggle3)
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
+        if (toggle3==True):
+            toggle3=False
+        else :
+            toggle3=True
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    if (lever5X < coor[0] < (lever5X+leverWidth) and lever5 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverFive.switchUp()
+        lever5 = True
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle4==True):
+            toggle4=False
+        else :
+            toggle4=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    elif  (lever5X < coor[0] < (lever5X+leverWidth) and lever5==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverFive.switchDown()
+        lever5 = False
+        lightFour.checkTValue(toggle4)
+        lightSix.checkTValue(toggle6)
+        if (toggle4==True):
+            toggle4=False
+        else :
+            toggle4=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    if (lever6X < coor[0] < (lever6X+leverWidth) and lever6 == False and leverY < coor[1] < (leverY + leverHeight)):
+        leverSix.switchUp()
+        lever6 = True
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
+    elif  (lever6X < coor[0] < (lever6X+leverWidth) and lever6==True and leverY < coor[1] < (leverY + leverHeight)):
+        leverSix.switchDown()
+        lever6 = False
+        lightFive.checkTValue(toggle5)
+        lightSix.checkTValue(toggle6)
+        if (toggle5==True):
+            toggle5=False
+        else :
+            toggle5=True
+        if (toggle6==True):
+            toggle6=False
+        else :
+            toggle6=True
 
+def bathroomPuzzle():
 
-## Puzzle Level 1
-def nextLvl():
-    wall_list.empty()
-    game_sprites.remove(security_spots1)
-
-    pygame.mixer.init()
-
-    miniGame1 = True
-    while miniGame1 == True:
-        pygame.mixer.init()
-        pygame.time.delay(100)
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                gameExit()
-
-
-        keys = pygame.key.get_pressed()
-        mouse1 = pygame.mouse.get_pressed()
-        # pygame.mouse.set_visible()
-
-        if (mouse1 == (1, 0, 0)):
-            mouseClick()
-
-        gameDisplay.fill((0, 0, 0))
-
-        pygame.draw.rect(gameDisplay, (255, 255, 255), (lever1X, leverY, leverWidth, leverHeight))
-        pygame.draw.rect(gameDisplay, (255, 255, 255), (lever2X, leverY, leverWidth, leverHeight))
-        pygame.draw.rect(gameDisplay, (255, 255, 255), (lever3X, leverY, leverWidth, leverHeight))
-        pygame.draw.rect(gameDisplay, (255, 255, 255), (lever4X, leverY, leverWidth, leverHeight))
-
-        pygame.draw.rect(gameDisplay, (255, 0, 0), (x, y, width, height))
-        pygame.draw.rect(gameDisplay, (255, 0, 0), (x + 500, y, width, height))
-        pygame.draw.rect(gameDisplay, (255, 0, 0), (lineX, lineY, lineWidth, lineHeight))
-        pygame.draw.circle(gameDisplay, toggle1, (x + 650, y + 7), cirRad, 0)
-
-        pygame.draw.rect(gameDisplay, (0, 255, 0), (x, y + 100, width, height))
-        pygame.draw.rect(gameDisplay, (0, 255, 0), (x + 500, y + 100, width, height))
-        pygame.draw.rect(gameDisplay, (0, 255, 0), (lineX, lineY + 100, lineWidth, lineHeight))
-        pygame.draw.circle(gameDisplay, toggle2, (x + 650, y + 107), cirRad, 0)
-
-        pygame.draw.rect(gameDisplay, (0, 0, 255), (x, y + 200, width, height))
-        pygame.draw.rect(gameDisplay, (0, 0, 255), (x + 500, y + 200, width, height))
-        pygame.draw.rect(gameDisplay, (0, 0, 255), (lineX, lineY + 200, lineWidth, lineHeight))
-        pygame.draw.circle(gameDisplay, toggle3, (x + 650, y + 207), cirRad, 0)
-
-        pygame.draw.rect(gameDisplay, (255, 255, 0), (x, y + 300, width, height))
-        pygame.draw.rect(gameDisplay, (255, 255, 0), (x + 500, y + 300, width, height))
-        pygame.draw.rect(gameDisplay, (255, 255, 0), (lineX, lineY + 300, lineWidth, lineHeight))
-        pygame.draw.circle(gameDisplay, toggle4, (x + 650, y + 307), cirRad, 0)
-
-        pygame.display.update()
-
-        if (toggle1 == GREEN):
-            if (toggle2 == GREEN):
-                if (toggle3 == GREEN):
-                    if (toggle4 == GREEN):
-                        myfont = pygame.font.SysFont("Arial", 60)
-                        label = myfont.render("You Win!", 1, (255, 255, 0))
-
-                        gameDisplay.blit(label, (500, 450))
-                        pygame.display.update()
-
-                        ## add to another level function
-                        miniGame1 = False
-                        running = True
-
+        return 0
 
 
 
@@ -940,9 +1292,9 @@ def elevatorLevel():
         if collisions:
             interaction = "bookshelf"
             # add rect for bg - helps locate background
-            gameDisplay.fill(BLACK)
+
             # draw background image - specify image file and rect to load image
-            nextLvl()
+            elevatorPuzzle()
             interactives.add(elevatorDoorLeaving)
 
         else:
@@ -1019,7 +1371,7 @@ def waitingRoomLevelOne():
 
 def bathroomLevel():
 
-    bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
+    bg_img = pygame.image.load(os.path.join(img_dir, "bathroomFinal.png")).convert()
     game_sprites.add(playerBathroom)
     game_sprites.remove(playerWaitingRoomOne)
     interactives.add(bathroomDoorExit)
@@ -1051,21 +1403,8 @@ def bathroomLevel():
         collisions = pygame.sprite.spritecollide(playerBathroom, interactives, True, pygame.sprite.collide_circle)
         # check collisions for game window
         if collisions:
-            interaction = "bookshelf"
-            # add rect for bg - helps locate background
-            gameDisplay.fill(BLACK)
-            # draw background image - specify image file and rect to load image
-            nextLvl()
 
-        else:
-            interaction = "none"
-            # draw
-            gameDisplay.fill(BLACK)
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
-        if collisions:
-            print('gotcha')
+            elevatorPuzzle()
 
         #draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
@@ -1110,19 +1449,8 @@ def waitingRoomLevelTwo():
         if collisions:
             interaction = "bookshelf"
             # add rect for bg - helps locate background
-            gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
 
-        else:
-            interaction = "none"
-            # draw
-            gameDisplay.fill(BLACK)
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
-        if collisions:
-            print('gotcha')
 
         #draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
@@ -1168,7 +1496,7 @@ def officeLevel():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1224,7 +1552,7 @@ def waitingRoomLevelThree():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1281,7 +1609,7 @@ def basementLevelOne():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1339,7 +1667,7 @@ def basementLevelTwo():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1397,7 +1725,7 @@ def basementLevelThree():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1453,7 +1781,7 @@ def FinalBossRoom():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1509,7 +1837,7 @@ def ending():
             # add rect for bg - helps locate background
             gameDisplay.fill(BLACK)
             # draw background image - specify image file and rect to load image
-            nextLvl()
+
 
         else:
             interaction = "none"
@@ -1531,15 +1859,25 @@ def ending():
 
 
 
-
+    mouse_pos = pygame.mouse.get_pos()
+    print(mouse_pos)
 
 #mainMenu()
-#lobbyLevel()
-#interactives.add(elevatorPanel)
-#elevatorLevel()
-#waitingRoomLevelOne()
-#bathroomLevel()
-#waitingRoomLevelTwo()
+lobbyLevel()
+
+
+interactives.add(elevatorPanel)
+elevatorLevel()
+
+
+waitingRoomLevelOne()
+
+
+interactives.add(bathroomPanel)
+bathroomLevel()
+
+interactives.add()
+waitingRoomLevelTwo()
 #officeLevel()
 #waitingRoomLevelThree()
 #basementLevelOne()
