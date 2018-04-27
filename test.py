@@ -22,11 +22,12 @@ display_height = 600
 display_width = 800
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('S.E.E.D')
+global IntroBackground
 IntroBackground =  pygame.image.load(os.path.join(img_dir, 'MainMenu.png' )).convert()
 gameIntroBackground = pygame.image.load(os.path.join(img_dir, 'MainMenu.png' )).convert()
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 30)
-
+mainMenuGreen = (42,57,29)
 
 smallText = pygame.font.Font("freesansbold.ttf",20)
 dialogueBox = pygame.draw.rect(gameDisplay,color('white'),(50,400,700,200))
@@ -56,9 +57,9 @@ def quitGame():
     quit()
 
 
-def fade(width,height):
+def fade(width,height,color):
     fade = pygame.Surface((width,400))
-    fade.fill((42,57,29))
+    fade.fill(color)
     clock.tick(20)
     for alpha in range(0,300):
         fade.set_alpha(alpha)
@@ -66,6 +67,7 @@ def fade(width,height):
         gameDisplay.blit(fade, (0,0))
         pygame.display.update()
         pygame.time.delay(26)
+
 
 def redrawGameDisplay():
     wallpaper(IntroBackground, 0, 0)
@@ -83,7 +85,7 @@ def button(msg,x,y,w,h,ic,ac,action=None,FADE=None):
             if FADE == None:
                 action()
             else:
-                fade(800,600)
+                fade(800,600,mainMenuGreen)
                 action()
 
     else:
@@ -162,14 +164,15 @@ def displayDialogue(story,pos=None):
 
     basicFont = pygame.font.SysFont(None, 20)
 
-    text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
+
+    text = basicFont.render('', True, (255, 0, 255), (0,0,0))
     textrect = text.get_rect()
     textrect.centerx += 55
     textrect.centery += 390
 
     if pos == None:
-        pygame.draw.rect(gameDisplay, color('white'), (50, 400, 700, 100))
-        text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
+        pygame.draw.rect(gameDisplay, WHITE, (50, 400, 700, 100))
+        text = basicFont.render('', True, (255, 0, 255), (0,0,0))
         textrect = text.get_rect()
         textrect.centerx += 55
         textrect.centery += 390
@@ -180,7 +183,7 @@ def displayDialogue(story,pos=None):
         textrect.centerx += 55
         textrect.centery += 40
 
-        pygame.draw.rect(gameDisplay, color('white'), (50, 50, 700, 100))
+        pygame.draw.rect(gameDisplay, WHITE, (50, 50, 700, 100))
 
 
 
@@ -589,8 +592,6 @@ light2Y = 160
 light3Y = 275
 light4Y = 395
 
-
-
 #Lights
 lightOne = Light(lightX,light1Y)
 lightTwo = Light(lightX,light2Y)
@@ -651,9 +652,6 @@ puzzleInteractionsW = pygame.sprite.Group()
 wall_list = pygame.sprite.Group()
 
 
-
-
-
 # create player object spawns
 playerList =[]
 playerlobbyPart1 = Player(25,280)
@@ -688,12 +686,7 @@ for player in playerList:
 
 
 
-
-
 scientist = Scientist()
-
-
-
 
 # add sprite to game's sprite group
 '''game_sprites.add(playerlobbyPart1, scientist)'''
@@ -702,11 +695,6 @@ scientist = Scientist()
 # new bookshelf group
 
 interactives.add(lobbyLevelPart2)
-
-
-
-
-
 
 def gameExit():
     pygame.quit()
@@ -2911,21 +2899,387 @@ def elevatorScenePartOne():
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(136, 137)
+    dialogue = getText(140, 141)
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(136, 137)
+    dialogue = getText(142, 144)
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(136, 137)
+    dialogue = getText(145, 146)
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(136, 137)
+    dialogue = getText(147, 148)
     displayDialogue(dialogue, 'top')
     continueDialogue()
+
+    dialogue = getText(149, 151)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(152, 153)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+def elevatorSceneTwo():
+
+    dialogue = getText(156, 157)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(158, 159)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+def waitingRoomOneScene():
+
+    dialogue = getText(162, 163)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(164, 165)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(166, 167)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(168, 170)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(171, 174)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(174,175)
+
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(147, 148)
+
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(147, 148)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+def bathroomScene():
+    dialogue = getText(181, 182)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(182, 184)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(185, 186)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(187, 190)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(191, 196)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(197, 198)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(199, 200)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(201, 202)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+    dialogue = getText(203, 205)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+
+
+    #moral 2
+
+    dialogue = getText(221, 223)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(221, 223)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(224, 226)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(219, 220)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(227, 229)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(230, 231)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(232, 233)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(234, 235)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(236, 237)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+def bathroomScenceTwo():
+    dialogue = getText(240, 241)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(242, 243)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(244, 245)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(246, 247)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+def waitingRoomSceneTwo():
+    dialogue = getText(250, 251)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(253, 254)
+    displayDialogue(dialogue)
+    continueDialogue()
+    #moral 3 and 4
+    dialogue = getText(147, 148)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(147, 148)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(147, 148)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(147, 148)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+def officeScene():
+    dialogue = getText(289, 290)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(291, 292)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(293, 294)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(295, 296)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(297, 300)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(301, 302)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(303, 306)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(307, 308)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(309, 311)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(312, 313)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(314, 315)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(316, 317)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(318, 320)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(321, 323)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(324, 325)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(326, 328)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(329, 330)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(331, 332)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(333, 334)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(335, 336)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(337, 338)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(339, 340)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(341, 342)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(343, 344)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+def basementOneScene():
+    dialogue = getText(349, 350)
+    displayDialogue(dialogue,'top')
+    continueDialogue()
+
+def basementTwoScene():
+    dialogue = getText(351, 352)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+def basementThreeScene():
+    dialogue = getText(353, 354)
+    displayDialogue(dialogue, 'top')
+    continueDialogue()
+
+
+
+def FinalScene():
+    dialogue = getText(357, 358)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(359, 360)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(361, 362)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(363, 364)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(365,368)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(369, 370)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(371, 373)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(374, 377)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(378, 379)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(380,382)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(383, 384)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(385,388)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(389, 390)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(391, 392)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(393, 394)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(395, 396)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(397, 398)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(399, 400)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+    dialogue = getText(401, 402)
+    displayDialogue(dialogue)
+    continueDialogue()
+
+
 
 #Beginning Of Game
 def mainMenu():
@@ -3005,10 +3359,9 @@ def gameIntro():
 
 def lobbyLevel():
 
-
     bg_img = pygame.image.load(os.path.join(img_dir, "lobby1New.png")).convert()
     #Runs First Dialogue Cutscene 1
-    cutScene1 = True
+    cutscene = True
     #Creates Wall for Lobby Level Part 1
     createWall('lobby1')
     running = True
@@ -3034,7 +3387,7 @@ def lobbyLevel():
 
     game_sprites.add(playerlobbyPart1,security_spots1)
 
-
+    puzzleInteractions.add(lobbyDesk)
 
     # create game loop
     while running:
@@ -3056,7 +3409,13 @@ def lobbyLevel():
         # 'updating' the game
         # update all game sprites
         game_sprites.update()
-        
+
+        collisions = pygame.sprite.spritecollide(playerlobbyPart1, puzzleInteractions , True, pygame.sprite.collide_circle)
+        # check collisions for game window
+
+        if collisions:
+            lobbyScenePartTwo()
+
         # add check fif cor collision - bookshelf and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerlobbyPart1, interactives, True, pygame.sprite.collide_circle)
         # check collisions for game window
@@ -3076,6 +3435,8 @@ def lobbyLevel():
 
             wall_list.empty()
             createWall('lobby2')
+
+
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerlobbyPart1, security_spots1, True, pygame.sprite.collide_circle)
@@ -3137,12 +3498,6 @@ def lobbyLevel():
         # draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
 
-
-        collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
-        if collisions:
-            if cutScene2 == True:
-                lobbyScenePartTwo()
-
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
         frames = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
@@ -3150,23 +3505,22 @@ def lobbyLevel():
         gameDisplay.blit(frames, (50, 50))
         # update the display window...
         pygame.display.update()
-
-        if cutScene1 == True:
-            cutScene1 = False
+        if cutscene ==True:
+            cutscene = False
             lobbyScenePartOne()
-            cutScene2 = 2
-
 
 def elevatorLevel():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "elevatorFinal.png")).convert()
+    security_spots1.empty()
 
     game_sprites.empty()
     game_sprites.add(playerelevatorLevel)
     wall_list.empty()
     createWall('elevator')
     interactives.add(elevatorPanel)
-
+    game_sprites.draw(gameDisplay)
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3198,7 +3552,8 @@ def elevatorLevel():
         if collisions:
             elevatorPuzzle()
             interactives.add(elevatorDoorLeaving)
-
+            gameDisplay.fill(BLACK)
+            elevatorSceneTwo()
 
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
@@ -3213,6 +3568,10 @@ def elevatorLevel():
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
+
+        if cutscene ==True:
+            cutscene = False
+            elevatorScenePartOne()
 
 def waitingRoomLevelOne():
 
@@ -3241,12 +3600,11 @@ def waitingRoomLevelOne():
                         ,security_spot10)
 
     game_sprites.add(playerWaitingRoomOne,security_spots1)
-
-
-
     wall_list.empty()
     createWall('waitingRoom')
+    game_sprites.draw(gameDisplay)
 
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3303,13 +3661,17 @@ def waitingRoomLevelOne():
                     # check click on window exit button
                     if event.type == pygame.QUIT:
                         quitGame()
+
+
         #draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
-
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
+        if cutscene ==True:
+            cutscene = False
+            waitingRoomOneScene()
 
 def bathroomLevel():
 
@@ -3317,10 +3679,10 @@ def bathroomLevel():
 
     game_sprites.empty()
     game_sprites.add(playerBathroom)
-
+    game_sprites.draw(gameDisplay)
     wall_list.empty()
     createWall('bathroom')
-
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3350,6 +3712,7 @@ def bathroomLevel():
             bathroomPuzzle()
             interactives.add(bathroomDoorExit)
             interactives.remove(bathroomPanel)
+            bathroomScenceTwo()
 
         collisions = pygame.sprite.spritecollide(playerBathroom, interactives, True, pygame.sprite.collide_circle)
 
@@ -3363,6 +3726,9 @@ def bathroomLevel():
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
+        if cutscene ==True:
+            cutscene = False
+            bathroomScene()
 
 def waitingRoomLevelTwo():
 
@@ -3389,11 +3755,12 @@ def waitingRoomLevelTwo():
 
     game_sprites.add(playerWaitingRoomTwo,security_spots1)
     interactives.add(officeEntrance)
-
+    game_sprites.draw(gameDisplay)
+    waitingRoomSceneTwo()
 
     wall_list.empty()
     createWall('waitingRoom')
-
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3456,6 +3823,10 @@ def waitingRoomLevelTwo():
         # update the display window...
         pygame.display.update()
 
+        if cutscene ==True:
+            cutscene = False
+            waitingRoomSceneTwo()
+
 def officeLevel():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "mainOffice.png")).convert()
@@ -3464,10 +3835,10 @@ def officeLevel():
     game_sprites.add(playerOffice)
     interactives.empty()
     interactives.add(officeDesk)
-
+    game_sprites.draw(gameDisplay)
     wall_list.empty()
     createWall('office')
-
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3521,12 +3892,15 @@ def officeLevel():
         # update the display window...
         pygame.display.update()
 
+        if cutscene ==True:
+            cutscene = False
+            officeScene()
+
 def waitingRoomLevelThree():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
     game_sprites.empty()
     security_spots1.empty()
-
 
     security_spot1 = Security(545, 455, 2, 0)
     security_spot2 = Security(750, 400, 3, -1)
@@ -3584,7 +3958,7 @@ def waitingRoomLevelThree():
 
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(playerBasementThree, security_spots1, True, pygame.sprite.collide_circle)
+        collisions = pygame.sprite.spritecollide(playerWaitingRoomThree, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
             gameDisplay.fill(BLACK)
             message_display('Game Over, Press Escape to Quit', pygame.font.match_font('agencyfb'), 70, color('red'),
@@ -3624,9 +3998,6 @@ def basementLevelOne():
     game_sprites.empty()
     security_spots1.empty()
 
-
-    game_sprites.add(playerBasementOne)
-
     security_spot1 = Security(220, 440, 1, 1)
     security_spot2 = Security(430, 380, 3, 1)
     security_spot3 = Security(500, 380, 1, 1)
@@ -3641,7 +4012,8 @@ def basementLevelOne():
                         security_spot7)
 
     game_sprites.add(playerBasementOne,security_spots1)
-
+    game_sprites.draw(gameDisplay)
+    basementOneScene()
 
     interactives.empty()
     puzzleInteractions.add(basementPuzzle1Correct)
@@ -3651,7 +4023,7 @@ def basementLevelOne():
 
     wall_list.empty()
     createWall('basement1')
-
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3768,6 +4140,10 @@ def basementLevelOne():
         # update the display window...
         pygame.display.update()
 
+        if cutscene == True:
+            cutscene = False
+            basementTwoScene()
+
 def basementLevelTwo():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "basementRoom2.png")).convert()
@@ -3790,6 +4166,9 @@ def basementLevelTwo():
 
 
     game_sprites.add(playerBasementTwo,security_spots1)
+    game_sprites.draw(gameDisplay)
+
+
     interactives.empty()
     puzzleInteractions.add(basementDoorTwoCorrect)
     puzzleInteractionsW.add(basementDoorTwoWrong)
@@ -3799,7 +4178,7 @@ def basementLevelTwo():
 
     wall_list.empty()
     createWall('basement2')
-
+    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3893,6 +4272,10 @@ def basementLevelTwo():
         # update the display window...
         pygame.display.update()
 
+        if cutscene ==True:
+            cutscene = False
+            basementTwoScene()
+
 def basementLevelThree():
 
     bg_img = pygame.image.load(os.path.join(img_dir, "basementRoom3.png")).convert()
@@ -3919,12 +4302,13 @@ def basementLevelThree():
 
     puzzleInteractions.add(basementPuzzle3Correct)
     game_sprites.add(playerBasementThree,security_spots1)
+    game_sprites.draw(gameDisplay)
 
     wall_list.empty()
     createWall('basement3')
 
 
-
+    cutscence = True
     running = True
     # create game loop
     while running:
@@ -3960,6 +4344,9 @@ def basementLevelThree():
 
             correctDoor.add(basementDoorThree)
 
+        if cutscence == True:
+            cutscence
+            basementThreeScene()
 
         # check collisions for game window
 
@@ -4030,6 +4417,9 @@ def basementLevelThree():
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
+        if cutscence == True:
+            cutscence
+            basementThreeScene()
 
 def FinalBossRoom():
 
@@ -4089,9 +4479,10 @@ def FinalBossRoom():
         pygame.display.update()
 
 def ending():
+    global IntroBackground
+    IntroBackground = pygame.image.load(os.path.join(img_dir, 'peacefulEnd.png')).convert()
 
-    bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
-
+    game_sprites.empty()
     running = True
     # create game loop
     while running:
@@ -4115,28 +4506,17 @@ def ending():
         game_sprites.update()
 
         # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
-        if collisions:
-            interaction = "bookshelf"
-            # add rect for bg - helps locate background
-            gameDisplay.fill(BLACK)
-            # draw background image - specify image file and rect to load image
 
-
-        else:
-            interaction = "none"
-            # draw
-            gameDisplay.fill(BLACK)
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
-        if collisions:
-            print('gotcha')
+        wallpaper(IntroBackground,0,0)
 
-        #draw background image - specify image file and rect to load image
-        gameDisplay.blit(bg_img, bg_rect)
 
+        dialogue = getText(470, 473)
+        displayDialogue(dialogue,'top')
+        continueDialogue()
+
+        running = False
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
         # update the display window...
@@ -4149,238 +4529,236 @@ def ending():
 
 
 
+while True:
 
-mainMenu()
-lobbyLevel()
+    mainMenu()
+    lobbyLevel()
+    
+    #lever coordinates
+    leverWidth = 60
+    leverHeight = 70
+    leverY = 500
+    
+    lever1X = 75
+    lever2X = 200
+    lever3X = 325
+    lever4X = 450
+    
+    lightX = 675
+    
+    light1Y = 45
+    light2Y = 160
+    light3Y = 275
+    light4Y = 395
+    
+    
+    lightRowOneY = 90
+    lightRowTwoY = 205
+    
+    #Levers
+    leverOne = Lever(lever1X,leverY)
+    leverTwo = Lever(lever2X,leverY)
+    leverThree = Lever(lever3X,leverY)
+    leverFour = Lever(lever4X,leverY)
+    
+    lightOne = Light(lightX,light1Y)
+    lightTwo = Light(lightX,light2Y)
+    lightThree = Light(lightX,light3Y)
+    lightFour = Light(lightX,light4Y)
+    
+    
+    
+    
+    elevatorLevel()
+    puzzleReset()
+    
+    waitingRoomLevelOne()
+    
+    leverWidth = 60
+    leverHeight = 70
+    leverY = 500
+    
+    
+    lever1X = 75
+    lever2X = 190
+    lever3X = 320
+    lever4X = 440
+    lever5X = 560
+    lever6X = 680
+    
+    lightRowOneY = 90
+    lightRowTwoY = 205
+    
+    light1X = 83
+    light2X = 160
+    light3X = 237
+    
+    leverOne = Lever(lever1X, leverY)
+    leverTwo = Lever(lever2X, leverY)
+    leverThree = Lever(lever3X, leverY)
+    leverFour = Lever(lever4X, leverY)
+    leverFive = Lever(lever5X, leverY)
+    leverSix = Lever(lever6X, leverY)
+    
+    lightOne = Light(light1X, lightRowOneY)
+    lightTwo = Light(light2X, lightRowOneY)
+    lightThree = Light(light3X, lightRowOneY)
+    lightFour = Light(light1X, lightRowTwoY)
+    lightFive = Light(light2X, lightRowTwoY)
+    lightSix = Light(light3X, lightRowTwoY)
+    
+    
+    interactives.add(bathroomPanel)
+    bathroomLevel()
+    puzzleReset()
+    
+    
+    
+    interactives.add(officeEntrance)
+    waitingRoomLevelTwo()
+    officeLevel()
+    waitingRoomLevelThree()
+    
+    #lever coordinates for basementPuzzle
+    leverWidth = 60
+    leverHeight = 70
+    leverY = 500
+    
+    lever1X = 75
+    lever2X = 175
+    lever3X = 275
+    lever4X = 375
+    lever5X = 475
+    lever6X = 575
+    
+    #light coordinates
+    lightX = 675
+    
+    light1Y = 15
+    light2Y = 90
+    light3Y = 170
+    light4Y = 245
+    light5Y = 320
+    light6Y = 400
+    
+    
+    leverOne = Lever(lever1X, leverY)
+    leverTwo = Lever(lever2X, leverY)
+    leverThree = Lever(lever3X, leverY)
+    leverFour = Lever(lever4X, leverY)
+    leverFive = Lever(lever5X, leverY)
+    leverSix = Lever(lever6X, leverY)
+    
+    lightOne = Light(lightX,light1Y)
+    lightTwo = Light(lightX,light2Y)
+    lightThree = Light(lightX,light3Y)
+    lightFour = Light(lightX,light4Y)
+    lightFive = Light(lightX,light5Y)
+    lightSix = Light(lightX,light6Y)
+    
+    
+    
+    puzzleReset()
+    basementLevelOne()
+    
+    #lever coordinates
+    leverWidth = 60
+    leverHeight = 70
+    leverY = 500
+    
+    lever1X = 25
+    lever2X = 125
+    lever3X = 225
+    lever4X = 325
+    lever5X = 425
+    lever6X = 525
+    lever7X = 625
+    lever8X = 725
+    
+    #light coordinates
+    lightX = 675
+    
+    light1Y = 10
+    light2Y = 70
+    light3Y = 130
+    light4Y = 190
+    light5Y = 250
+    light6Y = 310
+    light7Y = 370
+    light8Y = 430
+    
+    leverOne = Lever(lever1X,leverY)
+    leverTwo = Lever(lever2X,leverY)
+    leverThree = Lever(lever3X,leverY)
+    leverFour = Lever(lever4X,leverY)
+    leverFive = Lever(lever5X,leverY)
+    leverSix = Lever(lever6X,leverY)
+    leverSeven = Lever(lever7X,leverY)
+    leverEight = Lever(lever8X,leverY)
+    
+    lightOne = Light(lightX,light1Y)
+    lightTwo = Light(lightX,light2Y)
+    lightThree = Light(lightX,light3Y)
+    lightFour = Light(lightX,light4Y)
+    lightFive = Light(lightX,light5Y)
+    lightSix = Light(lightX,light6Y)
+    lightSeven = Light(lightX,light7Y)
+    lightEight = Light(lightX,light8Y)
+    
 
-#lever coordinates
-leverWidth = 60
-leverHeight = 70
-leverY = 500
-
-lever1X = 75
-lever2X = 200
-lever3X = 325
-lever4X = 450
-
-lightX = 675
-
-light1Y = 45
-light2Y = 160
-light3Y = 275
-light4Y = 395
-
-
-lightRowOneY = 90
-lightRowTwoY = 205
-
-#Levers
-leverOne = Lever(lever1X,leverY)
-leverTwo = Lever(lever2X,leverY)
-leverThree = Lever(lever3X,leverY)
-leverFour = Lever(lever4X,leverY)
-
-lightOne = Light(lightX,light1Y)
-lightTwo = Light(lightX,light2Y)
-lightThree = Light(lightX,light3Y)
-lightFour = Light(lightX,light4Y)
-
-
-
-
-elevatorLevel()
-puzzleReset()
-
-waitingRoomLevelOne()
-
-leverWidth = 60
-leverHeight = 70
-leverY = 500
-
-
-lever1X = 75
-lever2X = 190
-lever3X = 320
-lever4X = 440
-lever5X = 560
-lever6X = 680
-
-lightRowOneY = 90
-lightRowTwoY = 205
-
-light1X = 83
-light2X = 160
-light3X = 237
-
-leverOne = Lever(lever1X, leverY)
-leverTwo = Lever(lever2X, leverY)
-leverThree = Lever(lever3X, leverY)
-leverFour = Lever(lever4X, leverY)
-leverFive = Lever(lever5X, leverY)
-leverSix = Lever(lever6X, leverY)
-
-lightOne = Light(light1X, lightRowOneY)
-lightTwo = Light(light2X, lightRowOneY)
-lightThree = Light(light3X, lightRowOneY)
-lightFour = Light(light1X, lightRowTwoY)
-lightFive = Light(light2X, lightRowTwoY)
-lightSix = Light(light3X, lightRowTwoY)
-
-
-interactives.add(bathroomPanel)
-bathroomLevel()
-puzzleReset()
-
-
-
-interactives.add(officeEntrance)
-waitingRoomLevelTwo()
-officeLevel()
-waitingRoomLevelThree()
-
-#lever coordinates for basementPuzzle
-leverWidth = 60
-leverHeight = 70
-leverY = 500
-
-lever1X = 75
-lever2X = 175
-lever3X = 275
-lever4X = 375
-lever5X = 475
-lever6X = 575
-
-#light coordinates
-lightX = 675
-
-light1Y = 15
-light2Y = 90
-light3Y = 170
-light4Y = 245
-light5Y = 320
-light6Y = 400
-
-
-leverOne = Lever(lever1X, leverY)
-leverTwo = Lever(lever2X, leverY)
-leverThree = Lever(lever3X, leverY)
-leverFour = Lever(lever4X, leverY)
-leverFive = Lever(lever5X, leverY)
-leverSix = Lever(lever6X, leverY)
-
-lightOne = Light(lightX,light1Y)
-lightTwo = Light(lightX,light2Y)
-lightThree = Light(lightX,light3Y)
-lightFour = Light(lightX,light4Y)
-lightFive = Light(lightX,light5Y)
-lightSix = Light(lightX,light6Y)
-
-
-
-puzzleReset()
-basementLevelOne()
-
-#lever coordinates
-leverWidth = 60
-leverHeight = 70
-leverY = 500
-
-lever1X = 25
-lever2X = 125
-lever3X = 225
-lever4X = 325
-lever5X = 425
-lever6X = 525
-lever7X = 625
-lever8X = 725
-
-#light coordinates
-lightX = 675
-
-light1Y = 10
-light2Y = 70
-light3Y = 130
-light4Y = 190
-light5Y = 250
-light6Y = 310
-light7Y = 370
-light8Y = 430
-
-
-
-leverOne = Lever(lever1X,leverY)
-leverTwo = Lever(lever2X,leverY)
-leverThree = Lever(lever3X,leverY)
-leverFour = Lever(lever4X,leverY)
-leverFive = Lever(lever5X,leverY)
-leverSix = Lever(lever6X,leverY)
-leverSeven = Lever(lever7X,leverY)
-leverEight = Lever(lever8X,leverY)
-
-lightOne = Light(lightX,light1Y)
-lightTwo = Light(lightX,light2Y)
-lightThree = Light(lightX,light3Y)
-lightFour = Light(lightX,light4Y)
-lightFive = Light(lightX,light5Y)
-lightSix = Light(lightX,light6Y)
-lightSeven = Light(lightX,light7Y)
-lightEight = Light(lightX,light8Y)
-
-
-
-basementLevelTwo()
-puzzleReset()
-
-
-
-leverWidth = 60
-leverHeight = 70
-leverY = 500
-
-lever1X = 25
-lever2X = 100
-lever3X = 175
-lever4X = 250
-lever5X = 325
-lever6X = 400
-lever7X = 475
-lever8X = 550
-lever9X = 625
-lever10X = 700
-
-leverOne = Lever(lever1X,leverY)
-leverTwo = Lever(lever2X,leverY)
-leverThree = Lever(lever3X,leverY)
-leverFour = Lever(lever4X,leverY)
-leverFive = Lever(lever5X,leverY)
-leverSix = Lever(lever6X,leverY)
-leverSeven = Lever(lever7X,leverY)
-leverEight = Lever(lever8X,leverY)
-leverNine = Lever(lever9X, leverY)
-leverTen = Lever(lever10X, leverY)
-
-#light coordinates
-lightX = 675
-
-light1Y = 10
-light2Y = 70
-light3Y = 130
-light4Y = 190
-light5Y = 250
-light6Y = 310
-light7Y = 370
-light8Y = 430
-
-lightOne = Light(lightX,light1Y)
-lightTwo = Light(lightX,light2Y)
-lightThree = Light(lightX,light3Y)
-lightFour = Light(lightX,light4Y)
-lightFive = Light(lightX,light5Y)
-lightSix = Light(lightX,light6Y)
-lightSeven = Light(lightX,light7Y)
-lightEight = Light(lightX,light8Y)
-
-
-basementLevelThree()
-FinalBossRoom()
-#nding()
+    basementLevelTwo()
+    puzzleReset()
+    
+    
+    
+    leverWidth = 60
+    leverHeight = 70
+    leverY = 500
+    
+    lever1X = 25
+    lever2X = 100
+    lever3X = 175
+    lever4X = 250
+    lever5X = 325
+    lever6X = 400
+    lever7X = 475
+    lever8X = 550
+    lever9X = 625
+    lever10X = 700
+    
+    leverOne = Lever(lever1X,leverY)
+    leverTwo = Lever(lever2X,leverY)
+    leverThree = Lever(lever3X,leverY)
+    leverFour = Lever(lever4X,leverY)
+    leverFive = Lever(lever5X,leverY)
+    leverSix = Lever(lever6X,leverY)
+    leverSeven = Lever(lever7X,leverY)
+    leverEight = Lever(lever8X,leverY)
+    leverNine = Lever(lever9X, leverY)
+    leverTen = Lever(lever10X, leverY)
+    
+    #light coordinates
+    lightX = 675
+    
+    light1Y = 10
+    light2Y = 70
+    light3Y = 130
+    light4Y = 190
+    light5Y = 250
+    light6Y = 310
+    light7Y = 370
+    light8Y = 430
+    
+    lightOne = Light(lightX,light1Y)
+    lightTwo = Light(lightX,light2Y)
+    lightThree = Light(lightX,light3Y)
+    lightFour = Light(lightX,light4Y)
+    lightFive = Light(lightX,light5Y)
+    lightSix = Light(lightX,light6Y)
+    lightSeven = Light(lightX,light7Y)
+    lightEight = Light(lightX,light8Y)
+    
+    
+    basementLevelThree()
+    FinalBossRoom()
+    ending()
