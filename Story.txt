@@ -159,6 +159,7 @@ New AI: Great Job, the elevator is working again. Hopefully he doesn’t come ba
 Glad: Yeah hopefully but who knows what he wants to do with us
 
 Waiting Room
+
 Elevator stops at the 21st Floor**
 
 Glad: Alright we are here, now where do we go
@@ -209,14 +210,12 @@ might have starved to death because of what you did
 
 Glad Option 2: (Lying) It's okay, I won't tell him, I promise, Go hide in a stall
 
-
 Glad Option 3: Don't worry, I would have done the same thing. It’s a good thing that you
 stole the food, everyone deserves the same food. Just when this is all over, just steal for
 others as well that are in need.
 
 Stranger #5 Response 1: I know but we still need to eat, if you really think we did the wrong thing,
 then at least have this, *Gives Keycard, Goes hide in a stall
-
 
 New AI: This keycard gives us access to the
 
@@ -251,6 +250,7 @@ Waiting Room Pt2
 
 Stranger #3: He got O--.
 ****MORAL 3 (Tht, Res)
+
 Glad: Shhhhh.
 
 Threaten: I will strangle you.
@@ -269,12 +269,13 @@ Response #2: (lying) don’t worry, you will see your family
 Response #4: We will unite you with your family, after all family is the most important thing in life,
 You should try to help people hide until I beat him
 
+
 Stranger #3:
-
 Response #1: Please, at least notify my family that I'm alive.
-
+Stranger #3:
 Response #2: Thanks, I will be waiting for you to defeat Robert once and for all.
 
+Stranger #3:
 Response #3: Thanks, that makes me feel a lot better, I will start helping people escape
 
 Glad: Alright New AI, lets end this
@@ -326,7 +327,7 @@ That’s why your dad was here, to shut it down from this computer
 New AI: Ahh! Glad im going to need your help, I need you to access his main system, its in the basement
 most likely, I can make you a path so Robert doesn’t kill you but you need to hurry so he doesn’t kill me
 
-Glad: alright im on it.
+Glad: Alright im on it.
 
 Robert: I thought you said family was the most important thing in life?
 
@@ -346,6 +347,11 @@ FINAL BOSS
 
 AI Guides Glad through the doors (Simon Says game)
 
+AI: Go through the Right door by fixing the panel to your left!
+
+AI: Go to HTHEEM Southern Door by fixing the panel to0o00 in front of you
+
+AI: Neither of them Works, just walk into one of my cameras
 
 
 **Glad gets through the doors to get to the main frame
@@ -460,3 +466,11 @@ Susan
 Will
 
 https://www.almanac.com/content/flower-meanings-language-flowers
+
+
+
+New AI and Gladius was able defeat Robert and bring back life to planet earth. It
+brings the sky back to a sky blue and allowing for the new plants to grow. It is
+allowing the new Seeds planted to revive the planet.
+
+
