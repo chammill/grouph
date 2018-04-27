@@ -2960,14 +2960,7 @@ def waitingRoomOneScene():
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(147, 148)
 
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(147, 148)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
 
 def bathroomScene():
     dialogue = getText(181, 182)
@@ -3010,40 +3003,32 @@ def bathroomScene():
 
     #moral 2
 
-    dialogue = getText(221, 223)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(221, 223)
-    displayDialogue(dialogue)
-    continueDialogue()
-
     dialogue = getText(224, 226)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
     dialogue = getText(219, 220)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
     dialogue = getText(227, 229)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
     dialogue = getText(230, 231)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
     dialogue = getText(232, 233)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
     dialogue = getText(234, 235)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
     dialogue = getText(236, 237)
-    displayDialogue(dialogue)
+    displayDialogue(dialogue,'top')
     continueDialogue()
 
 def bathroomScenceTwo():
@@ -3301,7 +3286,7 @@ def mainMenu():
 
 
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(15)
 
 def gameIntro():
     global gameIntroLoop
@@ -3552,7 +3537,10 @@ def elevatorLevel():
         if collisions:
             elevatorPuzzle()
             interactives.add(elevatorDoorLeaving)
-            gameDisplay.fill(BLACK)
+            gameDisplay.blit(bg_img, bg_rect)
+
+            # draw all sprites to the game window
+            game_sprites.draw(gameDisplay)
             elevatorSceneTwo()
 
 
@@ -3712,6 +3700,9 @@ def bathroomLevel():
             bathroomPuzzle()
             interactives.add(bathroomDoorExit)
             interactives.remove(bathroomPanel)
+            gameDisplay.blit(bg_img, bg_rect)
+            game_sprites.draw(gameDisplay)
+
             bathroomScenceTwo()
 
         collisions = pygame.sprite.spritecollide(playerBathroom, interactives, True, pygame.sprite.collide_circle)
@@ -3756,7 +3747,6 @@ def waitingRoomLevelTwo():
     game_sprites.add(playerWaitingRoomTwo,security_spots1)
     interactives.add(officeEntrance)
     game_sprites.draw(gameDisplay)
-    waitingRoomSceneTwo()
 
     wall_list.empty()
     createWall('waitingRoom')
@@ -4531,8 +4521,8 @@ def ending():
 
 while True:
 
-    mainMenu()
-    lobbyLevel()
+    #mainMenu()
+    #lobbyLevel()
     
     #lever coordinates
     leverWidth = 60
@@ -4569,8 +4559,8 @@ while True:
     
     
     
-    elevatorLevel()
-    puzzleReset()
+    #elevatorLevel()
+    #puzzleReset()
     
     waitingRoomLevelOne()
     
@@ -4660,7 +4650,7 @@ while True:
     
     puzzleReset()
     basementLevelOne()
-    
+    puzzleReset()
     #lever coordinates
     leverWidth = 60
     leverHeight = 70
