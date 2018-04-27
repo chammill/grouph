@@ -222,7 +222,10 @@ global toggle3
 global toggle4
 global toggle5
 global toggle6
-
+global toggle7
+global toggle8
+global toggle9
+global toggle10
 
 global lever1
 global lever2
@@ -230,6 +233,10 @@ global lever3
 global lever4
 global lever5
 global lever6
+global lever7
+global lever8
+global lever9
+global lever10
 
 global lever1X
 global lever2X
@@ -254,7 +261,7 @@ lever6 = False
 
 
 # create a default player sprite for the game
-class Player(pygame.sprite.Sprite):
+'''class Player(pygame.sprite.Sprite):
     def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
         # load ship image & scale to fit game window...
@@ -321,8 +328,102 @@ class Player(pygame.sprite.Sprite):
                 self.rect.bottom = block.rect.top
             else:
                 self.rect.top = block.rect.bottom
+'''
 
 
+class Player(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        pygame.sprite.Sprite.__init__(self)
+        # load ship image & scale to fit game window...
+        self.image = pygame.transform.scale(char_img, (24, 30))
+        # set colorkey to remove white background for char's rect
+        self.image.set_colorkey(WHITE)
+        # check images and get rect...
+        self.rect = self.image.get_rect()
+        # set radius for circle bounding
+        self.radius = 20
+        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
+        self.rect.centerx = x
+        self.rect.bottom = y
+
+        self.speed_x = 0
+        self.speed_y = 0
+
+    # update per loop iteration
+    def update(self):
+        self.speed_x = 0
+        self.speed_y = 0
+
+        key_state = pygame.key.get_pressed()
+        if key_state[pygame.K_a]:
+            self.speed_x = -4
+            # change to facing left image
+            self.image = pygame.transform.scale(char_img_l, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
+        if key_state[pygame.K_d]:
+            self.speed_x = 4
+            # change to facing right image
+            self.image = pygame.transform.scale(char_img_r, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
+        if key_state[pygame.K_w]:
+            self.speed_y = -4
+            # change to facing up image
+            self.image = pygame.transform.scale(char_img_u, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
+        if key_state[pygame.K_s]:
+            self.speed_y = 4
+            # change to facing down image
+            self.image = pygame.transform.scale(char_img, (24, 30))
+            # set colorkey to remove black background for ship's rect
+            self.image.set_colorkey(WHITE)
+        self.rect.x += self.speed_x
+
+        if self.rect.right > display_width:
+            self.rect.right = display_width
+        if self.rect.left < 0:
+            self.rect.left = 0
+
+        # Did this update cause us to hit a wall?
+        block_hit_list = pygame.sprite.spritecollide(self, self.walls, False)
+        for block in block_hit_list:
+            # If we are moving right, set our right side to the left side of
+            # the item we hit
+            if self.speed_x > 0:
+                self.rect.right = block.rect.left
+
+            else:
+                # Otherwise if we are moving left, do the opposite.
+                self.rect.left = block.rect.right
+                # Check and see if we hit anything
+
+        self.rect.y += self.speed_y
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > display_height:
+            self.rect.bottom = display_height
+
+        # Check and see if we hit anything
+        block_hit_list = pygame.sprite.spritecollide(self, self.walls, False)
+        for block in block_hit_list:
+
+            # Reset our position based on the top/bottom of the object.
+            if self.speed_y > 0:
+                self.rect.bottom = block.rect.top
+            else:
+                self.rect.top = block.rect.bottom
+
+
+# player's character
+char_img = pygame.image.load(os.path.join(img_dir, "char1.png")).convert()
+# player's character facing right
+char_img_r = pygame.image.load(os.path.join(img_dir, "char1r.png")).convert()
+# player's character facing left
+char_img_l = pygame.image.load(os.path.join(img_dir, "char1l.png")).convert()
+# player's character facing up
+char_img_u = pygame.image.load(os.path.join(img_dir, "char1u.png")).convert()
 # wall
 class Wall(pygame.sprite.Sprite):
     """ Wall the player can run into. """
@@ -1372,9 +1473,6 @@ def basementPuzzleOne():
     game_sprites.add(lightFive)
     game_sprites.add(lightSix)
 
-
-
-
     running = True
     while running:
         for event in EVENTS.get():
@@ -1621,7 +1719,329 @@ def mouseClickBasementOne():
         else:
             toggle3 = True
 
-
+def basementPuzzleTwo():
+    def mouseClick():
+        coor = pygame.mouse.get_pos()
+        global lever1
+        global lever2
+        global lever3
+        global lever4
+        global lever5
+        global lever6
+        global lever7
+        global lever8
+        global toggle1
+        global toggle2
+        global toggle3
+        global toggle4
+        global toggle5
+        global toggle6
+        global toggle7
+        global toggle8
+        if (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverOne.switchUp()
+            lever1 = True
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightSix.checkTValue(toggle6)
+            if (toggle6 == True):
+                toggle6 = False
+            else:
+                toggle6 = True
+        elif (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverOne.switchDown()
+            lever1 = False
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightSix.checkTValue(toggle6)
+            if (toggle6 == True):
+                toggle6 = False
+            else:
+                toggle6 = True
+        if (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverTwo.switchUp()
+            lever2 = True
+            lightThree.checkTValue(toggle3)
+            if (toggle3 == True):
+                toggle3 = False
+            else:
+                toggle3 = True
+            lightFour.checkTValue(toggle4)
+            if (toggle4 == True):
+                toggle4 = False
+            else:
+                toggle4 = True
+            lightEight.checkTValue(toggle8)
+            if (toggle8 == True):
+                toggle8 = False
+            else:
+                toggle8 = True
+        elif (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverTwo.switchDown()
+            lever2 = False
+            lightThree.checkTValue(toggle3)
+            if (toggle3 == True):
+                toggle3 = False
+            else:
+                toggle3 = True
+            lightFour.checkTValue(toggle4)
+            if (toggle4 == True):
+                toggle4 = False
+            else:
+                toggle4 = True
+            lightEight.checkTValue(toggle8)
+            if (toggle8 == True):
+                toggle8 = False
+            else:
+                toggle8 = True
+        if (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverThree.switchUp()
+            lever3 = True
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightFive.checkTValue(toggle5)
+            if (toggle5 == True):
+                toggle5 = False
+            else:
+                toggle5 = True
+            lightSeven.checkTValue(toggle7)
+            if (toggle7 == True):
+                toggle7 = False
+            else:
+                toggle7 = True
+        elif (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverThree.switchDown()
+            lever3 = False
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightFive.checkTValue(toggle5)
+            if (toggle5 == True):
+                toggle5 = False
+            else:
+                toggle5 = True
+            lightSeven.checkTValue(toggle7)
+            if (toggle7 == True):
+                toggle7 = False
+            else:
+                toggle7 = True
+        if (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverFour.switchUp()
+            lever4 = True
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightThree.checkTValue(toggle3)
+            if (toggle3 == True):
+                toggle3 = False
+            else:
+                toggle3 = True
+        elif (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverFour.switchDown()
+            lever4 = False
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightThree.checkTValue(toggle3)
+            if (toggle3 == True):
+                toggle3 = False
+            else:
+                toggle3 = True
+        if (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverFive.switchUp()
+            lever5 = True
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightThree.checkTValue(toggle3)
+            if (toggle3 == True):
+                toggle3 = False
+            else:
+                toggle3 = True
+            lightSeven.checkTValue(toggle7)
+            if (toggle7 == True):
+                toggle7 = False
+            else:
+                toggle7 = True
+        elif (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverFive.switchDown()
+            lever5 = False
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightThree.checkTValue(toggle3)
+            if (toggle3 == True):
+                toggle3 = False
+            else:
+                toggle3 = True
+            lightSeven.checkTValue(toggle7)
+            if (toggle7 == True):
+                toggle7 = False
+            else:
+                toggle7 = True
+        if (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverSix.switchUp()
+            lever6 = True
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightSeven.checkTValue(toggle7)
+            if (toggle7 == True):
+                toggle7 = False
+            else:
+                toggle7 = True
+            lightEight.checkTValue(toggle8)
+            if (toggle8 == True):
+                toggle8 = False
+            else:
+                toggle8 = True
+        elif (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverSix.switchDown()
+            lever6 = False
+            lightOne.checkTValue(toggle1)
+            if (toggle1 == True):
+                toggle1 = False
+            else:
+                toggle1 = True
+            lightSeven.checkTValue(toggle7)
+            if (toggle7 == True):
+                toggle7 = False
+            else:
+                toggle7 = True
+            lightEight.checkTValue(toggle8)
+            if (toggle8 == True):
+                toggle8 = False
+            else:
+                toggle8 = True
+        if (lever7X < coor[0] < (lever7X + leverWidth) and lever7 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverSeven.switchUp()
+            lever7 = True
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightFive.checkTValue(toggle5)
+            if (toggle5 == True):
+                toggle5 = False
+            else:
+                toggle5 = True
+            lightSix.checkTValue(toggle6)
+            if (toggle6 == True):
+                toggle6 = False
+            else:
+                toggle6 = True
+        elif (lever7X < coor[0] < (lever7X + leverWidth) and lever7 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverSeven.switchDown()
+            lever7 = False
+            lightTwo.checkTValue(toggle2)
+            if (toggle2 == True):
+                toggle2 = False
+            else:
+                toggle2 = True
+            lightFive.checkTValue(toggle5)
+            if (toggle5 == True):
+                toggle5 = False
+            else:
+                toggle5 = True
+            lightSix.checkTValue(toggle6)
+            if (toggle6 == True):
+                toggle6 = False
+            else:
+                toggle6 = True
+        if (lever8X < coor[0] < (lever8X + leverWidth) and lever8 == False and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverEight.switchUp()
+            lever8 = True
+            lightFour.checkTValue(toggle4)
+            if (toggle4 == True):
+                toggle4 = False
+            else:
+                toggle4 = True
+            lightSix.checkTValue(toggle6)
+            if (toggle6 == True):
+                toggle6 = False
+            else:
+                toggle6 = True
+            lightEight.checkTValue(toggle8)
+            if (toggle8 == True):
+                toggle8 = False
+            else:
+                toggle8 = True
+        elif (lever8X < coor[0] < (lever8X + leverWidth) and lever8 == True and leverY < coor[1] < (
+                leverY + leverHeight)):
+            leverEight.switchDown()
+            lever8 = False
+            lightFour.checkTValue(toggle4)
+            if (toggle4 == True):
+                toggle4 = False
+            else:
+                toggle4 = True
+            lightSix.checkTValue(toggle6)
+            if (toggle6 == True):
+                toggle6 = False
+            else:
+                toggle6 = True
+            lightEight.checkTValue(toggle8)
+            if (toggle8 == True):
+                toggle8 = False
+            else:
+                toggle8 = True
 
 
 
@@ -2539,6 +2959,7 @@ def ending():
     mouse_pos = pygame.mouse.get_pos()
     print(mouse_pos)
 
+'''
 mainMenu()
 lobbyLevel()
 
@@ -2612,7 +3033,7 @@ interactives.add(officeEntrance)
 waitingRoomLevelTwo()
 officeLevel()
 waitingRoomLevelThree()
-
+'''
 #lever coordinates for basementPuzzle
 leverWidth = 60
 leverHeight = 70
@@ -2658,8 +3079,35 @@ toggle5 = False
 toggle6 = False
 
 
-#basementPuzzleOne()
+basementPuzzleOne()
+game_sprites.empty()
+basementLevelOne()
 
+#lever coordinates
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 25
+lever2X = 125
+lever3X = 225
+lever4X = 325
+lever5X = 425
+lever6X = 525
+lever7X = 625
+lever8X = 725
+
+#light coordinates
+lightX = 675
+
+light1Y = 10
+light2Y = 70
+light3Y = 130
+light4Y = 190
+light5Y = 250
+light6Y = 310
+light7Y = 370
+light8Y = 430
 
 basementLevelTwo()
 basementLevelThree()
