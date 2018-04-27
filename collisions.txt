@@ -1,0 +1,306 @@
+x, y, width, height
+
+
+
+
+
+officeLevelnew.png
+
+# left wall 
+wall = Wall(0, 110, 25, 600)
+wall_list.add(wall)
+
+# top left wall 
+wall = Wall(0, 110, 370, 60)
+wall_list.add(wall)
+
+# top right wall 
+wall = Wall(460, 110, 370, 60)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(775, 130, 25, 600)
+wall_list.add(wall)
+
+# top right desk 
+wall = Wall(470, 265, 60, 40)
+wall_list.add(wall)
+
+# top left desk 
+wall = Wall(290, 265, 60, 40)
+wall_list.add(wall)
+
+# bottom right desk 
+wall = Wall(470, 375, 60, 50)
+wall_list.add(wall)
+
+# bottom left desk 
+wall = Wall(290, 375, 60, 50)
+wall_list.add(wall)
+
+
+
+
+
+
+
+
+elevatorFinal
+
+
+# top wall 
+wall = Wall(250, 200, 400, 60)
+wall_list.add(wall)
+
+# left block 
+wall = Wall(230, 140, 120, 200)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(255, 120, 20, 400)
+wall_list.add(wall)
+
+# right block 
+wall = Wall(440, 140, 120, 200)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(520, 120, 20, 400)
+wall_list.add(wall)
+
+# bottom wall 
+wall = Wall(250, 470, 400, 60)
+wall_list.add(wall)
+
+
+
+
+
+
+
+
+lobby1New
+
+# top wall 
+wall = Wall(0, 80, 800, 60)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(0, 80, 25, 600)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(775, 80, 25, 600)
+wall_list.add(wall)
+
+# bottom wall 
+wall = Wall(0, 490, 380, 120)
+wall_list.add(wall)
+
+# top desk  
+wall = Wall(150, 180, 80, 30)
+wall_list.add(wall)
+
+# middle desk  
+wall = Wall(680, 280, 30, 80)
+wall_list.add(wall)
+
+# bottom desk  
+wall = Wall(280, 410, 30, 80)
+wall_list.add(wall)
+
+
+
+
+
+
+lobby2New
+# top wall 
+wall = Wall(0, 20, 800, 60)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(195, 00, 20, 800)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(575, 80, 25, 600)
+wall_list.add(wall)
+
+# bottom wall 
+wall = Wall(0, 520, 800, 120)
+wall_list.add(wall)
+
+
+
+
+
+
+bathroomFinal
+# top wall 
+wall = Wall(0, 0, 800, 200)
+wall_list.add(wall)
+
+# stalls 
+wall = Wall(180, 285, 60, 200)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(140, 00, 20, 800)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(650, 80, 25, 600)
+wall_list.add(wall)
+
+# bottom wall 
+wall = Wall(0, 530, 800, 120)
+wall_list.add(wall)
+
+
+
+
+
+
+
+basmentRoom1 
+
+# top wall 
+wall = Wall(0, 20, 800, 60)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(175, 00, 20, 800)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(620, 80, 25, 600)
+wall_list.add(wall) 
+
+# bottom wall 
+wall = Wall(0, 550, 800, 120)
+wall_list.add(wall)
+
+# top clutter
+wall = Wall(320, 80, 80, 80)
+wall_list.add(wall)
+
+# left clutter
+wall = Wall(180, 210, 135, 80)
+wall_list.add(wall)
+
+# left server
+wall = Wall(500, 255, 135, 50)
+wall_list.add(wall)
+
+
+
+
+
+
+basementRoom2
+
+# top wall 
+wall = Wall(0, 20, 800, 60)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(175, 00, 20, 800)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(620, 80, 25, 600)
+wall_list.add(wall) 
+
+# bottom wall 
+wall = Wall(0, 550, 800, 120)
+wall_list.add(wall)
+
+
+# top clutter
+wall = Wall(455, 80, 25, 60)
+wall_list.add(wall)
+
+
+# top right clutter
+wall = Wall(520, 180, 60, 45)
+wall_list.add(wall)
+
+# left clutter
+wall = Wall(200, 280, 60, 45)
+wall_list.add(wall)
+
+# bottom right clutter
+wall = Wall(500, 380, 180, 45)
+wall_list.add(wall)
+
+wall = Wall(430, 420, 60, 45)
+wall_list.add(wall)
+
+
+
+
+
+
+
+basementRoom3 
+
+# top right clutter
+wall = Wall(520, 140, 120, 45)
+wall_list.add(wall)
+
+# desk
+wall = Wall(200, 140, 40, 45)
+wall_list.add(wall)
+
+# server
+wall = Wall(200, 240, 110, 45)
+wall_list.add(wall)
+
+# left clutter
+wall = Wall(200, 460, 100, 25)
+wall_list.add(wall)
+
+
+
+
+
+
+
+
+
+
+serverRoom
+
+
+# top wall 
+wall = Wall(0, 20, 800, 160)
+wall_list.add(wall)
+
+# left wall 
+wall = Wall(175, 00, 20, 800)
+wall_list.add(wall)
+
+# right wall 
+wall = Wall(620, 80, 25, 600)
+wall_list.add(wall) 
+
+# bottom wall 
+wall = Wall(0, 475, 800, 120)
+wall_list.add(wall)
+
+# right server
+wall = Wall(510, 255, 135, 50)
+wall_list.add(wall)
+
+# left server
+wall = Wall(160, 330, 135, 40)
+wall_list.add(wall)
+
+# top clutter
+wall = Wall(315, 230, 25, 30)
+wall_list.add(wall)
+
+# bottom clutter
+wall = Wall(515, 405, 25, 25)
+wall_list.add(wall)
