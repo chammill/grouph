@@ -3277,7 +3277,7 @@ def mainMenu():
         wallpaper(IntroBackground,0,0)
         message_display('S.E.E.D', pygame.font.match_font('agencyfb'), 115,color('white'),display_width,display_height,True)
 
-        button("Start", 350,300,100,50,color("forestgreen"),color("green"),gameIntro,True)
+        button("Start", 350,300,100,50,color("forestgreen"),color("green"),gameIntro)
         button("Quit", 350, 400, 100, 50, color("darkred"), color("red"),quitGame)
 
         frames = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
@@ -4516,7 +4516,6 @@ def ending():
 
     mouse_pos = pygame.mouse.get_pos()
     print(mouse_pos)
-
 
 
 while True:
