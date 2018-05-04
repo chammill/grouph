@@ -1069,11 +1069,11 @@ def createWall(level):
         # bottom right clutter
         wall = Wall(500, 380, 180, 45)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         wall = Wall(430, 420, 60, 45)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
     #Collisons for basement level 3
     elif (level == 'basement3'):
@@ -1081,56 +1081,54 @@ def createWall(level):
         # top right clutter
         wall = Wall(520, 140, 120, 45)
         wall_list.add(wall)
-        game_sprites.add(wall)
 
 
         # desk
         wall = Wall(200, 140, 40, 45)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
 
         # server
         wall = Wall(200, 240, 110, 45)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
 
         # left clutter
         wall = Wall(200, 460, 100, 25)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         #Left Wall
         wall = Wall(140, 40, 40, 540)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         #Right Wall
         wall = Wall(630, 60, 20, 500)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         #BookShelf (Fallen)
         wall = Wall(430, 340, 200, 60)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         #Bottom BookShelf
         wall = Wall(580, 475, 80, 60)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
 
         wall = Wall(460, 325, 110, 25)
         wall_list.add(wall)
-        game_sprites.add(wall)
 
 
 
         wall = Wall(200, 460, 100, 25)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
     #Collisons for final room
     elif (level == 'FinalRoom'):
@@ -1138,43 +1136,39 @@ def createWall(level):
         # top wall
         wall = Wall(0, 20, 800, 160)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         # left wall
         wall = Wall(175, 00, 20, 800)
         wall_list.add(wall)
-        game_sprites.add(wall)
-
 
         # right wall
         wall = Wall(620, 80, 25, 600)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         # bottom wall
         wall = Wall(0, 475, 800, 120)
         wall_list.add(wall)
-        game_sprites.add(wall)
 
         # right server
         wall = Wall(510, 255, 135, 50)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         # left server
         wall = Wall(160, 330, 135, 40)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         # top clutter
         wall = Wall(315, 230, 25, 30)
         wall_list.add(wall)
-        game_sprites.add(wall)
+
 
         # bottom clutter
         wall = Wall(515, 405, 25, 25)
         wall_list.add(wall)
-        game_sprites.add(wall)
 
 #Mouse interaction with elevator level
 def mouseClickElevator():
@@ -4388,7 +4382,7 @@ lightSeven = Light(lightX,light7Y)
 lightEight = Light(lightX,light8Y)
 
 
-
+puzzleReset()
 basementLevelTwo()
 puzzleReset()
 
