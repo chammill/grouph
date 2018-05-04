@@ -3947,6 +3947,8 @@ def officeLevel():
 
     interactives.add(officeDesk)
 
+    Cont = 1
+
     # Creates Wall
     wall_list.empty()
     createWall('office')
@@ -3977,25 +3979,19 @@ def officeLevel():
         # Checks for Collision with Desk
         collisions = pygame.sprite.spritecollide(playerOffice, interactives, True, pygame.sprite.collide_circle)
         if collisions:
-            #must touch desk to continue the game
-            print('get out')
-            officeScene()
-            # draw background image - specify image file and rect to load image
-            interactives.add(officeExit)
+            if Cont == 1:
 
-        # Checks for Collision with interactives
-        collisions = pygame.sprite.spritecollide(playerOffice, interactives, True, pygame.sprite.collide_circle)
+                #must touch desk to continue the game
+                print('get out')
+                officeScene()
+                interactives.add(officeExit)
+                Cont = 0
 
-        if collisions:
-
-            running = False
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-
+            else:
+                running = False
 
         #draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
-
 
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
@@ -4064,14 +4060,10 @@ def waitingRoomLevelThree():
         # update all game sprites
         game_sprites.update()
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerWaitingRoomThree, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
         if collisions:
             running = False
 
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerBasementThree, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
             gameDisplay.fill(BLACK)
@@ -4284,8 +4276,8 @@ def basementLevelTwo():
 
     game_sprites.add(playerBasementTwo,security_spots1)
     interactives.empty()
-    puzzleInteractions.add(basementDoorTwoCorrect)
-    puzzleInteractionsW.add(basementDoorTwoWrong)
+    puzzleInteractions.add(basementPuzzle2Correct)
+    puzzleInteractionsW.add(basementPuzzle2Wrong)
 
     # Creates Wall
     wall_list.empty()
@@ -4369,7 +4361,7 @@ def basementLevelTwo():
                     if event.type == pygame.QUIT:
                         quitGame()
 
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
+
         collisions = pygame.sprite.spritecollide(playerBasementTwo, wrongDoor, True, pygame.sprite.collide_circle)
         if collisions:
             #Displays Game Over Screen
@@ -4439,7 +4431,7 @@ def basementLevelThree():
     game_sprites.draw(gameDisplay)
     basementThreeScene()
 
-    # Creates Wall
+    #Creates Wall
     wall_list.empty()
     createWall('basement3')
 
@@ -4593,19 +4585,6 @@ def FinalBossRoom():
         # 'updating' the game
         # update all game sprites
         game_sprites.update()
-
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(player, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
-        if collisions:
-            interaction = "bookshelf"
-
-
-
-
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-
 
         #draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
@@ -4905,4 +4884,4 @@ lightEight = Light(lightX,light8Y)
 
 basementLevelThree()
 FinalBossRoom()
-ending()
+'''ending();'''
