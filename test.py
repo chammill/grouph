@@ -4,8 +4,6 @@ import sys
 import os
 
 
-
-pygame.init()
 # game assets
 game_dir = os.path.dirname(__file__)
 # relative path to assets dir
@@ -22,12 +20,11 @@ display_height = 600
 display_width = 800
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption('S.E.E.D')
-global IntroBackground
 IntroBackground =  pygame.image.load(os.path.join(img_dir, 'MainMenu.png' )).convert()
 gameIntroBackground = pygame.image.load(os.path.join(img_dir, 'MainMenu.png' )).convert()
 clock = pygame.time.Clock()
 font = pygame.font.Font(None, 30)
-mainMenuGreen = (42,57,29)
+
 
 smallText = pygame.font.Font("freesansbold.ttf",20)
 dialogueBox = pygame.draw.rect(gameDisplay,color('white'),(50,400,700,200))
@@ -51,15 +48,16 @@ security_spot = pygame.image.load(os.path.join(img_dir, "camera_spot.png")).conv
 # scientist
 scientist_img = pygame.image.load(os.path.join(img_dir, "scientist.png")).convert()
 
+#Exit Game
 def quitGame():
     pygame.quit()
     sys.exit()
     quit()
 
-
-def fade(width,height,color):
+#Gives the Fade effect at the Start
+def fade(width,height):
     fade = pygame.Surface((width,400))
-    fade.fill(color)
+    fade.fill((42,57,29))
     clock.tick(20)
     for alpha in range(0,300):
         fade.set_alpha(alpha)
@@ -68,12 +66,12 @@ def fade(width,height,color):
         pygame.display.update()
         pygame.time.delay(26)
 
-
+#Goes with the Fade effect
 def redrawGameDisplay():
     wallpaper(IntroBackground, 0, 0)
     message_display('S.E.E.D',pygame.font.match_font('agencyfb'),115,color('white'),display_width,display_height,True)
 
-
+#Buttons for the Beginning
 def button(msg,x,y,w,h,ic,ac,action=None,FADE=None):
 
     mouse = pygame.mouse.get_pos()
@@ -85,7 +83,7 @@ def button(msg,x,y,w,h,ic,ac,action=None,FADE=None):
             if FADE == None:
                 action()
             else:
-                fade(800,600,mainMenuGreen)
+                fade(800,600)
                 action()
 
     else:
@@ -97,6 +95,7 @@ def button(msg,x,y,w,h,ic,ac,action=None,FADE=None):
     gameDisplay.blit(butSurf,butRect)
     return False
 
+#Allows the player to read Dialogue then continue by pressing "SPACE"
 def continueDialogue():
     pygame.display.update()
     stop = 1
@@ -110,7 +109,7 @@ def continueDialogue():
                 quit()
 
 
-
+#For Moral Dialogue "Not Finish"
 def moralDialogue(moralEvent=None):
     pygame.display.update()
     stop = 1
@@ -130,15 +129,17 @@ def moralDialogue(moralEvent=None):
                 pygame.quit()
                 quit()
 
+#Background for MainMenu
 def wallpaper(background,x,y):
     gameDisplay.blit(background,(x,y))
 
+#
 def text_objects(text,Font,color):
     textSurface = Font.render(text,True,color)
     return textSurface, textSurface.get_rect()
 
 
-
+#Displays text on screen (Not used for Dialogue
 def message_display(text,FONT,size,color,xLocation,yLocation,center=None):
     largeText = pygame.font.Font(FONT,size)
     TextSurf, TextRect = text_objects(text, largeText,color)
@@ -147,46 +148,49 @@ def message_display(text,FONT,size,color,xLocation,yLocation,center=None):
         gameDisplay.blit(TextSurf, TextRect)
     pygame.display.update()
 
-
+#Gets Story Dialogue from Story file
 def getText(lineStart,lineEnd):
     f = open("Story.txt", 'r')
     lines = f.readlines()
     f.close()
     story = []
 
+    #Puts the Story into a list
     for lineNumber in range(lineStart, lineEnd):
         story.append(lines[lineNumber])
 
     return story
 
 
+#Displays Dialogue on screen either top or bottom
 def displayDialogue(story,pos=None):
 
     basicFont = pygame.font.SysFont(None, 20)
 
-
-    text = basicFont.render('', True, (255, 0, 255), (0,0,0))
+    text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
     textrect = text.get_rect()
     textrect.centerx += 55
     textrect.centery += 390
 
+    #Bottom Box Dialogue
     if pos == None:
-        pygame.draw.rect(gameDisplay, WHITE, (50, 400, 700, 100))
-        text = basicFont.render('', True, (255, 0, 255), (0,0,0))
+        pygame.draw.rect(gameDisplay, color('white'), (50, 400, 700, 100))
+        text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
         textrect = text.get_rect()
         textrect.centerx += 55
         textrect.centery += 390
 
+    #Top Box Dialogue
     else:
         text = basicFont.render('', True, (255, 0, 255), (255, 255, 255))
         textrect = text.get_rect()
         textrect.centerx += 55
         textrect.centery += 40
 
-        pygame.draw.rect(gameDisplay, WHITE, (50, 50, 700, 100))
+        pygame.draw.rect(gameDisplay, color('white'), (50, 50, 700, 100))
 
 
-
+    #Creates the dialogue box and put the text inside it
     for line in story:
         # each i has a newline character, so by i[:-1] we will get rid of it
         text = basicFont.render(line[:-1], True, (0, 0, 0), (255, 255, 255))
@@ -209,6 +213,7 @@ YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
 
 
+#Global Variables for Puzzles
 global toggle1
 global toggle2
 global toggle3
@@ -242,7 +247,7 @@ global lever8X
 global lever9X
 global lever10x
 
-
+#Starting Values for Puzzles
 lever1 = False
 lever2 = False
 lever3 = False
@@ -264,9 +269,6 @@ toggle7 = False
 toggle8 = False
 toggle9 = False
 toggle10 = False
-
-# initialise pygame settings and create game window
-#interaction = "empty"
 
 
 # create a default player sprite for the game
@@ -549,6 +551,7 @@ leverFour = Lever(lever4X,leverY)
 leverFive = Lever(lever5X,leverY)
 leverSix = Lever(lever6X,leverY)
 
+#Lights Class
 class Light(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -620,8 +623,7 @@ basementDoorOneCorrect = Wall(615,170,10,50)
 basementDoorOneWrong = Wall(400, 60,50,50)
 basementDoorTwoCorrect = Wall(595,430,50,50)
 basementDoorTwoWrong = Wall(375,537,50,50)
-basementDoorThree = Wall(425,100,50,20)
-
+basementDoorThree = Wall(385,75,70,40)
 
 #dialogue prompts
 lobbyDesk = Wall(680,275,50,50)
@@ -667,7 +669,7 @@ playerBasementTwo = Player(225,200)
 playerBasementThree = Player(190,410)
 playerFinal = Player(380,450)
 
-
+#adds the player spawn into the collision class
 playerList.append(playerlobbyPart1)
 playerList.append(playerlobbyPart2)
 playerList.append(playerelevatorLevel)
@@ -684,22 +686,15 @@ playerList.append(playerFinal)
 for player in playerList:
     player.walls = wall_list
 
-
-
+#Test NPC
 scientist = Scientist()
 
-# add sprite to game's sprite group
-'''game_sprites.add(playerlobbyPart1, scientist)'''
-# add sprites for security spots
-
-# new bookshelf group
-
-interactives.add(lobbyLevelPart2)
 
 def gameExit():
     pygame.quit()
     sys.exit()
 
+#Resets the puzzles before each new puzzle level
 def puzzleReset():
     global toggle1
     global toggle2
@@ -756,8 +751,9 @@ def puzzleReset():
     toggle9 = False
     toggle10 = False
 
+#Creates the walls for each level
 def createWall(level):
-
+    #collisons for lobby level part one
     if (level == 'lobby1'):
         # top wall
         wall = Wall(0, 80, 800, 60)
@@ -803,8 +799,7 @@ def createWall(level):
         wall = Wall(540, 490, 200, 100)
         wall_list.add(wall)
 
-
-
+    #Collisons for lobby level part two
     elif (level == 'lobby2'):
 
         # top wall
@@ -837,7 +832,7 @@ def createWall(level):
         wall = Wall(410, 360, 150, 80)
         wall_list.add(wall)
 
-
+    #Collisons for elevator level
     elif (level == 'elevator'):
 
         # top wall
@@ -869,7 +864,7 @@ def createWall(level):
         wall = Wall(250, 470, 400, 60)
         wall_list.add(wall)
 
-
+    #Collisons for waiting room level for all 3
     elif (level == 'waitingRoom'):
 
         # left wall
@@ -915,6 +910,7 @@ def createWall(level):
         wall = Wall(0, 565, 800, 120)
         wall_list.add(wall)
 
+    #Collisons for bathroom level
     elif (level == 'bathroom'):
 
         # top wall
@@ -946,6 +942,7 @@ def createWall(level):
         wall = Wall(265, 200, 220, 40)
         wall_list.add(wall)
 
+    #Collison for office level
     elif (level == 'office'):
 
         # left wall
@@ -972,6 +969,7 @@ def createWall(level):
         wall = Wall(570, 220, 80, 40)
         wall_list.add(wall)
 
+    #Collisons for Basement level 1
     elif (level == 'basement1'):
 
         # top wall
@@ -1017,6 +1015,7 @@ def createWall(level):
         wall = Wall(500, 255, 135, 50)
         wall_list.add(wall)
 
+    #Collisons for basement level 2
     elif (level == 'basement2'):
 
         # top wall
@@ -1027,7 +1026,6 @@ def createWall(level):
         # left wall
         wall = Wall(175, 00, 20, 800)
         wall_list.add(wall)
-        game_sprites.add(wall)
 
         # right wall
         wall = Wall(620, 80, 25, 600)
@@ -1077,52 +1075,64 @@ def createWall(level):
         wall_list.add(wall)
         game_sprites.add(wall)
 
+    #Collisons for basement level 3
     elif (level == 'basement3'):
 
         # top right clutter
         wall = Wall(520, 140, 120, 45)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
 
         # desk
         wall = Wall(200, 140, 40, 45)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
 
         # server
         wall = Wall(200, 240, 110, 45)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
 
         # left clutter
         wall = Wall(200, 460, 100, 25)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
-
+        #Left Wall
         wall = Wall(140, 40, 40, 540)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
-
+        #Right Wall
         wall = Wall(630, 60, 20, 500)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
-
-        wall = Wall(430, 340, 130, 60)
+        #BookShelf (Fallen)
+        wall = Wall(430, 340, 200, 60)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
-
-        wall = Wall(580, 475, 20, 60)
+        #Bottom BookShelf
+        wall = Wall(580, 475, 80, 60)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
 
         wall = Wall(460, 325, 110, 25)
         wall_list.add(wall)
+        game_sprites.add(wall)
+
 
 
         wall = Wall(200, 460, 100, 25)
         wall_list.add(wall)
+        game_sprites.add(wall)
 
-
+    #Collisons for final room
     elif (level == 'FinalRoom'):
 
         # top wall
@@ -1166,6 +1176,7 @@ def createWall(level):
         wall_list.add(wall)
         game_sprites.add(wall)
 
+#Mouse interaction with elevator level
 def mouseClickElevator():
     coor = pygame.mouse.get_pos()
     global lever1
@@ -1291,8 +1302,7 @@ def mouseClickElevator():
         else:
             toggle3 = True
 
-
-## Puzzle Level 1
+##Elevator Puzzle Level
 def elevatorPuzzle():
     mouse1 = pygame.mouse.get_pressed()
     BackGround = Background('elevator-circuit-draft.png', [0, 0])
@@ -1348,6 +1358,7 @@ def elevatorPuzzle():
     game_sprites.empty()
     game_sprites.add(playerelevatorLevel)
 
+#Bathroom Puzzle Level
 def bathroomPuzzle():
     BackGround = Background('pipe-draft-full.png', [0, 0])
     global toggle1
@@ -1423,6 +1434,7 @@ def bathroomPuzzle():
                                 game_sprites.empty()
                                 game_sprites.add(playerBathroom)
 
+#Mouse interaction with bathroom
 def mouseClickBathroom():
     coor = pygame.mouse.get_pos()
     global lever1
@@ -1604,6 +1616,7 @@ def mouseClickBathroom():
         else :
             toggle6=True
 
+#Basement Puzzle Level 1
 def basementPuzzleOne():
     BackGround = Background('elevator-circuit-draft-6.png', [0, 0])
 
@@ -1674,6 +1687,7 @@ def basementPuzzleOne():
                                 game_sprites.empty()
                                 game_sprites.add(playerBasementOne)
 
+#Mouse interaction with basement one puzzles
 def mouseClickBasementOne():
     coor = pygame.mouse.get_pos()
     global lever1
@@ -1885,6 +1899,7 @@ def mouseClickBasementOne():
         else:
             toggle3 = True
 
+#Basement Puzzle Level 2
 def basementPuzzleTwo():
     BackGround = Background('elevator-circuit-draft-8.png', [0, 0])
 
@@ -1966,7 +1981,9 @@ def basementPuzzleTwo():
                                         game_sprites.empty()
                                         game_sprites.add(playerBasementTwo)
 
-def basementPuzzleThree():
+#Mouse interaction with basement two
+def mouseClickBasementPuzzleTwo():
+    coor = pygame.mouse.get_pos()
     global lever1
     global lever2
     global lever3
@@ -1984,6 +2001,353 @@ def basementPuzzleThree():
     global toggle6
     global toggle7
     global toggle8
+
+    if (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverOne.switchUp()
+        lever1 = True
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightSix.checkTValue(toggle6)
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    elif (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverOne.switchDown()
+        lever1 = False
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightSix.checkTValue(toggle6)
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    if (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverTwo.switchUp()
+        lever2 = True
+        lightThree.checkTValue(toggle3)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        lightFour.checkTValue(toggle4)
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        lightEight.checkTValue(toggle8)
+        if (toggle8 == True):
+            toggle8 = False
+        else:
+            toggle8 = True
+    elif (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverTwo.switchDown()
+        lever2 = False
+        lightThree.checkTValue(toggle3)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        lightFour.checkTValue(toggle4)
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        lightEight.checkTValue(toggle8)
+        if (toggle8 == True):
+            toggle8 = False
+        else:
+            toggle8 = True
+    if (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverThree.switchUp()
+        lever3 = True
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightFive.checkTValue(toggle5)
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+        lightSeven.checkTValue(toggle7)
+        if (toggle7 == True):
+            toggle7 = False
+        else:
+            toggle7 = True
+    elif (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverThree.switchDown()
+        lever3 = False
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightFive.checkTValue(toggle5)
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+        lightSeven.checkTValue(toggle7)
+        if (toggle7 == True):
+            toggle7 = False
+        else:
+            toggle7 = True
+    if (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverFour.switchUp()
+        lever4 = True
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightThree.checkTValue(toggle3)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+    elif (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverFour.switchDown()
+        lever4 = False
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightThree.checkTValue(toggle3)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+    if (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverFive.switchUp()
+        lever5 = True
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightThree.checkTValue(toggle3)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        lightSeven.checkTValue(toggle7)
+        if (toggle7 == True):
+            toggle7 = False
+        else:
+            toggle7 = True
+    elif (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverFive.switchDown()
+        lever5 = False
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightThree.checkTValue(toggle3)
+        if (toggle3 == True):
+            toggle3 = False
+        else:
+            toggle3 = True
+        lightSeven.checkTValue(toggle7)
+        if (toggle7 == True):
+            toggle7 = False
+        else:
+            toggle7 = True
+    if (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverSix.switchUp()
+        lever6 = True
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightSeven.checkTValue(toggle7)
+        if (toggle7 == True):
+            toggle7 = False
+        else:
+            toggle7 = True
+        lightEight.checkTValue(toggle8)
+        if (toggle8 == True):
+            toggle8 = False
+        else:
+            toggle8 = True
+    elif (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverSix.switchDown()
+        lever6 = False
+        lightOne.checkTValue(toggle1)
+        if (toggle1 == True):
+            toggle1 = False
+        else:
+            toggle1 = True
+        lightSeven.checkTValue(toggle7)
+        if (toggle7 == True):
+            toggle7 = False
+        else:
+            toggle7 = True
+        lightEight.checkTValue(toggle8)
+        if (toggle8 == True):
+            toggle8 = False
+        else:
+            toggle8 = True
+    if (lever7X < coor[0] < (lever7X + leverWidth) and lever7 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverSeven.switchUp()
+        lever7 = True
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightFive.checkTValue(toggle5)
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+        lightSix.checkTValue(toggle6)
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    elif (lever7X < coor[0] < (lever7X + leverWidth) and lever7 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverSeven.switchDown()
+        lever7 = False
+        lightTwo.checkTValue(toggle2)
+        if (toggle2 == True):
+            toggle2 = False
+        else:
+            toggle2 = True
+        lightFive.checkTValue(toggle5)
+        if (toggle5 == True):
+            toggle5 = False
+        else:
+            toggle5 = True
+        lightSix.checkTValue(toggle6)
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+    if (lever8X < coor[0] < (lever8X + leverWidth) and lever8 == False and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverEight.switchUp()
+        lever8 = True
+        lightFour.checkTValue(toggle4)
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        lightSix.checkTValue(toggle6)
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+        lightEight.checkTValue(toggle8)
+        if (toggle8 == True):
+            toggle8 = False
+        else:
+            toggle8 = True
+    elif (lever8X < coor[0] < (lever8X + leverWidth) and lever8 == True and leverY <
+        coor[1] < (
+                leverY + leverHeight)):
+        leverEight.switchDown()
+        lever8 = False
+        lightFour.checkTValue(toggle4)
+        if (toggle4 == True):
+            toggle4 = False
+        else:
+            toggle4 = True
+        lightSix.checkTValue(toggle6)
+        if (toggle6 == True):
+            toggle6 = False
+        else:
+            toggle6 = True
+        lightEight.checkTValue(toggle8)
+        if (toggle8 == True):
+            toggle8 = False
+        else:
+            toggle8 = True
+            c
+
+
+#Basement Puzzle Level 3
+def basementPuzzleThree():
+    global lever1
+    global lever2
+    global lever3
+    global lever4
+    global lever5
+    global lever6
+    global lever7
+    global lever8
+    global lever9
+    global lever10
+
+    global toggle1
+    global toggle2
+    global toggle3
+    global toggle4
+    global toggle5
+    global toggle6
+    global toggle7
+    global toggle8
+    global toggle9
+    global toggle10
 
     game_sprites.add(leverOne)
     game_sprites.add(leverTwo)
@@ -2005,9 +2369,12 @@ def basementPuzzleThree():
     game_sprites.add(lightSeven)
     game_sprites.add(lightEight)
 
+
+
     BackGround = Background('elevator-circuit-draft-8.png', [0, 0])
 
-    while True:
+    running = True
+    while running:
         # check loop is running at set speed
         clock.tick(FPS)
         # 'processing' inputs (events)
@@ -2023,7 +2390,7 @@ def basementPuzzleThree():
             if event.type == pygame.QUIT:
                 gameExit()
             if event.type == pygame.MOUSEBUTTONDOWN:
-                mouseClickBasementPuzzleThree
+                mouseClickBasementPuzzleThree()
 
         # 'updating' the game
         # update all game sprites
@@ -2042,342 +2409,12 @@ def basementPuzzleThree():
                             if (toggle6 == True):
                                 if (toggle7 == True):
                                     if (toggle8 == True):
-                                        if(toggle9 == True):
-                                            if(toggle10 == True):
-                                                running = False
-                                                game_sprites.empty()
-                                                game_sprites.add(playerBasementThree)
+                                        running = False
+                                        game_sprites.empty()
+                                        game_sprites.add(playerBasementThree)
 
 
-
-def mouseClickBasementPuzzleTwo():
-    coor = pygame.mouse.get_pos()
-    global lever1
-    global lever2
-    global lever3
-    global lever4
-    global lever5
-    global lever6
-    global lever7
-    global lever8
-
-    global toggle1
-    global toggle2
-    global toggle3
-    global toggle4
-    global toggle5
-    global toggle6
-    global toggle7
-    global toggle8
-
-
-
-    if (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverOne.switchUp()
-        lever1 = True
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightSix.checkTValue(toggle6)
-        if (toggle6 == True):
-            toggle6 = False
-        else:
-            toggle6 = True
-    elif (lever1X < coor[0] < (lever1X + leverWidth) and lever1 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverOne.switchDown()
-        lever1 = False
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightSix.checkTValue(toggle6)
-        if (toggle6 == True):
-            toggle6 = False
-        else:
-            toggle6 = True
-    if (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverTwo.switchUp()
-        lever2 = True
-        lightThree.checkTValue(toggle3)
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-        lightFour.checkTValue(toggle4)
-        if (toggle4 == True):
-            toggle4 = False
-        else:
-            toggle4 = True
-        lightEight.checkTValue(toggle8)
-        if (toggle8 == True):
-            toggle8 = False
-        else:
-            toggle8 = True
-    elif (lever2X < coor[0] < (lever2X + leverWidth) and lever2 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverTwo.switchDown()
-        lever2 = False
-        lightThree.checkTValue(toggle3)
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-        lightFour.checkTValue(toggle4)
-        if (toggle4 == True):
-            toggle4 = False
-        else:
-            toggle4 = True
-        lightEight.checkTValue(toggle8)
-        if (toggle8 == True):
-            toggle8 = False
-        else:
-            toggle8 = True
-    if (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverThree.switchUp()
-        lever3 = True
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightFive.checkTValue(toggle5)
-        if (toggle5 == True):
-            toggle5 = False
-        else:
-            toggle5 = True
-        lightSeven.checkTValue(toggle7)
-        if (toggle7 == True):
-            toggle7 = False
-        else:
-            toggle7 = True
-    elif (lever3X < coor[0] < (lever3X + leverWidth) and lever3 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverThree.switchDown()
-        lever3 = False
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightFive.checkTValue(toggle5)
-        if (toggle5 == True):
-            toggle5 = False
-        else:
-            toggle5 = True
-        lightSeven.checkTValue(toggle7)
-        if (toggle7 == True):
-            toggle7 = False
-        else:
-            toggle7 = True
-    if (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverFour.switchUp()
-        lever4 = True
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightThree.checkTValue(toggle3)
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-    elif (lever4X < coor[0] < (lever4X + leverWidth) and lever4 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverFour.switchDown()
-        lever4 = False
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightThree.checkTValue(toggle3)
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-    if (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverFive.switchUp()
-        lever5 = True
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightThree.checkTValue(toggle3)
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-        lightSeven.checkTValue(toggle7)
-        if (toggle7 == True):
-            toggle7 = False
-        else:
-            toggle7 = True
-    elif (lever5X < coor[0] < (lever5X + leverWidth) and lever5 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverFive.switchDown()
-        lever5 = False
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightThree.checkTValue(toggle3)
-        if (toggle3 == True):
-            toggle3 = False
-        else:
-            toggle3 = True
-        lightSeven.checkTValue(toggle7)
-        if (toggle7 == True):
-            toggle7 = False
-        else:
-            toggle7 = True
-    if (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverSix.switchUp()
-        lever6 = True
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightSeven.checkTValue(toggle7)
-        if (toggle7 == True):
-            toggle7 = False
-        else:
-            toggle7 = True
-        lightEight.checkTValue(toggle8)
-        if (toggle8 == True):
-            toggle8 = False
-        else:
-            toggle8 = True
-    elif (lever6X < coor[0] < (lever6X + leverWidth) and lever6 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverSix.switchDown()
-        lever6 = False
-        lightOne.checkTValue(toggle1)
-        if (toggle1 == True):
-            toggle1 = False
-        else:
-            toggle1 = True
-        lightSeven.checkTValue(toggle7)
-        if (toggle7 == True):
-            toggle7 = False
-        else:
-            toggle7 = True
-        lightEight.checkTValue(toggle8)
-        if (toggle8 == True):
-            toggle8 = False
-        else:
-            toggle8 = True
-    if (lever7X < coor[0] < (lever7X + leverWidth) and lever7 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverSeven.switchUp()
-        lever7 = True
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightFive.checkTValue(toggle5)
-        if (toggle5 == True):
-            toggle5 = False
-        else:
-            toggle5 = True
-        lightSix.checkTValue(toggle6)
-        if (toggle6 == True):
-            toggle6 = False
-        else:
-            toggle6 = True
-    elif (lever7X < coor[0] < (lever7X + leverWidth) and lever7 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverSeven.switchDown()
-        lever7 = False
-        lightTwo.checkTValue(toggle2)
-        if (toggle2 == True):
-            toggle2 = False
-        else:
-            toggle2 = True
-        lightFive.checkTValue(toggle5)
-        if (toggle5 == True):
-            toggle5 = False
-        else:
-            toggle5 = True
-        lightSix.checkTValue(toggle6)
-        if (toggle6 == True):
-            toggle6 = False
-        else:
-            toggle6 = True
-    if (lever8X < coor[0] < (lever8X + leverWidth) and lever8 == False and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverEight.switchUp()
-        lever8 = True
-        lightFour.checkTValue(toggle4)
-        if (toggle4 == True):
-            toggle4 = False
-        else:
-            toggle4 = True
-        lightSix.checkTValue(toggle6)
-        if (toggle6 == True):
-            toggle6 = False
-        else:
-            toggle6 = True
-        lightEight.checkTValue(toggle8)
-        if (toggle8 == True):
-            toggle8 = False
-        else:
-            toggle8 = True
-    elif (lever8X < coor[0] < (lever8X + leverWidth) and lever8 == True and leverY < coor[1] < (
-                leverY + leverHeight)):
-        leverEight.switchDown()
-        lever8 = False
-        lightFour.checkTValue(toggle4)
-        if (toggle4 == True):
-            toggle4 = False
-        else:
-            toggle4 = True
-        lightSix.checkTValue(toggle6)
-        if (toggle6 == True):
-            toggle6 = False
-        else:
-            toggle6 = True
-        lightEight.checkTValue(toggle8)
-        if (toggle8 == True):
-            toggle8 = False
-        else:
-            toggle8 = True
-
-
+#Mouse interaction with Basement Three
 def mouseClickBasementPuzzleThree():
 
     coor = pygame.mouse.get_pos()
@@ -2763,8 +2800,7 @@ def mouseClickBasementPuzzleThree():
         else:
             toggle8 = True
 
-
-#Dialogue Cutscences
+#Dialogue Cutscenes
 def lobbyScenePartOne():
 
     dialogue = getText(41, 42)
@@ -2807,6 +2843,7 @@ def lobbyScenePartOne():
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
+#Dialogue
 def lobbyScenePartTwo():
 
     dialogue = getText(66, 67)
@@ -2853,6 +2890,7 @@ def lobbyScenePartTwo():
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
+#Dialogue
 def elevatorScenePartOne():
 
     dialogue = getText(117, 118)
@@ -2899,371 +2937,21 @@ def elevatorScenePartOne():
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(140, 141)
+    dialogue = getText(136, 137)
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(142, 144)
+    dialogue = getText(136, 137)
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(145, 146)
+    dialogue = getText(136, 137)
     displayDialogue(dialogue, 'top')
     continueDialogue()
 
-    dialogue = getText(147, 148)
+    dialogue = getText(136, 137)
     displayDialogue(dialogue, 'top')
     continueDialogue()
-
-    dialogue = getText(149, 151)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(152, 153)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-def elevatorSceneTwo():
-
-    dialogue = getText(156, 157)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(158, 159)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-def waitingRoomOneScene():
-
-    dialogue = getText(162, 163)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(164, 165)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(166, 167)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(168, 170)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(171, 174)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(174,175)
-
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-
-
-def bathroomScene():
-    dialogue = getText(181, 182)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(182, 184)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(185, 186)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(187, 190)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(191, 196)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(197, 198)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(199, 200)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(201, 202)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-    dialogue = getText(203, 205)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-
-
-    #moral 2
-
-    dialogue = getText(224, 226)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-    dialogue = getText(219, 220)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-    dialogue = getText(227, 229)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-    dialogue = getText(230, 231)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-    dialogue = getText(232, 233)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-    dialogue = getText(234, 235)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-    dialogue = getText(236, 237)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-def bathroomScenceTwo():
-    dialogue = getText(240, 241)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(242, 243)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(244, 245)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(246, 247)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-def waitingRoomSceneTwo():
-    dialogue = getText(250, 251)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(253, 254)
-    displayDialogue(dialogue)
-    continueDialogue()
-    #moral 3 and 4
-    dialogue = getText(147, 148)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(147, 148)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(147, 148)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(147, 148)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-def officeScene():
-    dialogue = getText(289, 290)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(291, 292)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(293, 294)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(295, 296)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(297, 300)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(301, 302)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(303, 306)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(307, 308)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(309, 311)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(312, 313)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(314, 315)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(316, 317)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(318, 320)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(321, 323)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(324, 325)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(326, 328)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(329, 330)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(331, 332)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(333, 334)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(335, 336)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(337, 338)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(339, 340)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(341, 342)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(343, 344)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-def basementOneScene():
-    dialogue = getText(349, 350)
-    displayDialogue(dialogue,'top')
-    continueDialogue()
-
-def basementTwoScene():
-    dialogue = getText(351, 352)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-def basementThreeScene():
-    dialogue = getText(353, 354)
-    displayDialogue(dialogue, 'top')
-    continueDialogue()
-
-
-
-def FinalScene():
-    dialogue = getText(357, 358)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(359, 360)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(361, 362)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(363, 364)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(365,368)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(369, 370)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(371, 373)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(374, 377)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(378, 379)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(380,382)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(383, 384)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(385,388)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(389, 390)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(391, 392)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(393, 394)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(395, 396)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(397, 398)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(399, 400)
-    displayDialogue(dialogue)
-    continueDialogue()
-
-    dialogue = getText(401, 402)
-    displayDialogue(dialogue)
-    continueDialogue()
-
 
 
 #Beginning Of Game
@@ -3277,7 +2965,7 @@ def mainMenu():
         wallpaper(IntroBackground,0,0)
         message_display('S.E.E.D', pygame.font.match_font('agencyfb'), 115,color('white'),display_width,display_height,True)
 
-        button("Start", 350,300,100,50,color("forestgreen"),color("green"),gameIntro)
+        button("Start", 350,300,100,50,color("forestgreen"),color("green"),gameIntro,True)
         button("Quit", 350, 400, 100, 50, color("darkred"), color("red"),quitGame)
 
         frames = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
@@ -3286,7 +2974,7 @@ def mainMenu():
 
 
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(30)
 
 def gameIntro():
     global gameIntroLoop
@@ -3297,6 +2985,7 @@ def gameIntro():
                  pygame.quit()
                  quit()
 
+        #Game Introduction
         gameDisplay.fill(color("green"))
         wallpaper(gameIntroBackground,0,0)
         frames = font.render(str(int(clock.get_fps())), True, pygame.Color('white'))
@@ -3344,36 +3033,37 @@ def gameIntro():
 
 def lobbyLevel():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "lobby1New.png")).convert()
+
     #Runs First Dialogue Cutscene 1
-    cutscene = True
-    #Creates Wall for Lobby Level Part 1
+    cutScene1 = True
+    # Creates Wall
     createWall('lobby1')
-    running = True
-    game_sprites.add((playerlobbyPart1))
+
+    #Creates Security Spors for Current Level
     security_spot1 = Security(90, 190, 1, 1)
     security_spot2 = Security(80, 400, 2, 1,1)
     security_spot3 = Security(320, 230, 2, -1)
     security_spot4 = Security(230, 400, 2, 0,-1)
-
     security_spot5 = Security(420, 400, 3, 1)
-
     security_spot6 = Security(415, 500, 1, 1)
     security_spot7 = Security(685, 380, 2, 1)
     security_spot8 = Security(610, 310, 2,-1)
     security_spot9 = Security(450, 210, 1,1)
 
-
-
-
     security_spots1.add(security_spot1, security_spot2, security_spot3,
                         security_spot4, security_spot5, security_spot6,
                         security_spot7,security_spot8,security_spot9)
 
+    #adds and creates player sprite and security cameras
+    game_sprites.add((playerlobbyPart1))
     game_sprites.add(playerlobbyPart1,security_spots1)
 
-    puzzleInteractions.add(lobbyDesk)
+    #adds access to the next level
+    interactives.add(lobbyLevelPart2)
 
+    running = True
     # create game loop
     while running:
         # check loop is running at set speed
@@ -3394,38 +3084,36 @@ def lobbyLevel():
         # 'updating' the game
         # update all game sprites
         game_sprites.update()
-
-        collisions = pygame.sprite.spritecollide(playerlobbyPart1, puzzleInteractions , True, pygame.sprite.collide_circle)
-        # check collisions for game window
-
-        if collisions:
-            lobbyScenePartTwo()
-
-        # add check fif cor collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+        
         collisions = pygame.sprite.spritecollide(playerlobbyPart1, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
-
+        # Checks for Collision with interactive
         if collisions:
             bg_img = pygame.image.load(os.path.join(img_dir, "lobby2New.png")).convert()
+
+            #Clears Current Drawn Sprites
             game_sprites.empty()
             security_spots1.empty()
 
+            #Creates Lobby Part Two Security Cameras
             security_spot1 = Security(400, 400   , 3, -1)
             security_spot2 = Security(390, 380, 3, 1,-1)
             security_spot3 = Security(285, 360, 1, 1)
             security_spots1.add(security_spot1, security_spot2, security_spot3)
+
+            # adds and creates player sprite and security cameras
             game_sprites.add(playerlobbyPart2,security_spots1)
+
+            #Add the interaction of entering elevator level
             interactives.add(elevatorDoor)
 
-
+            #Creates Next Level Wall collisions
             wall_list.empty()
             createWall('lobby2')
 
-
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
+        # Checks for Collision with security
         collisions = pygame.sprite.spritecollide(playerlobbyPart1, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
+            #displays black GameOver Screen
             gameDisplay.fill(BLACK)
             message_display('Game Over, Press Escape to Quit', pygame.font.match_font('agencyfb'), 70, color('red'),
                             display_width,
@@ -3450,12 +3138,16 @@ def lobbyLevel():
                     if event.type == pygame.QUIT:
                         quitGame()
 
-        collisions = pygame.sprite.spritecollide(playerlobbyPart2, interactives, True, pygame.sprite.collide_circle)
+        # Checks for Collision with interactives
+        collisions = pygame.sprite.sprcitecollide(playerlobbyPart2, interactives, True, pygame.sprite.collide_circle)
         if collisions:
+            #Ends the While loop and continues to next level
             running = False
 
         collisions = pygame.sprite.spritecollide(playerlobbyPart2, security_spots1, True, pygame.sprite.collide_circle)
+        # Checks for Collision with sercurity
         if collisions:
+            #displays black GameOver Screen
             gameDisplay.fill(BLACK)
             message_display('Game Over, Press Escape to Quit', pygame.font.match_font('agencyfb'), 70, color('red'),
                             display_width,
@@ -3482,6 +3174,13 @@ def lobbyLevel():
 
         # draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
+
+        collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
+        # Checks for Collision with interactives
+        if collisions:
+            #Starts dialogue for Lobby Part 2
+            if cutScene2 == True:
+                lobbyScenePartTwo()
 
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
@@ -3490,22 +3189,29 @@ def lobbyLevel():
         gameDisplay.blit(frames, (50, 50))
         # update the display window...
         pygame.display.update()
-        if cutscene ==True:
-            cutscene = False
+
+        #Runs Dialogue for LobbyPart One upon starting the level
+        if cutScene1 == True:
+            cutScene1 = False
             lobbyScenePartOne()
+            cutScene2 = 2
 
 def elevatorLevel():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "elevatorFinal.png")).convert()
-    security_spots1.empty()
 
+    #Empties all currently drawn sprites
     game_sprites.empty()
     game_sprites.add(playerelevatorLevel)
+
+    #Creates Wall
     wall_list.empty()
     createWall('elevator')
+
+    #adds access to the next level
     interactives.add(elevatorPanel)
-    game_sprites.draw(gameDisplay)
-    cutscene = True
+
     running = True
     # create game loop
     while running:
@@ -3531,20 +3237,14 @@ def elevatorLevel():
         # update all game sprites
         game_sprites.update()
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+
+        # Checks for Collision with interactives
         collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
         if collisions:
             elevatorPuzzle()
             interactives.add(elevatorDoorLeaving)
-            gameDisplay.blit(bg_img, bg_rect)
 
-            # draw all sprites to the game window
-            game_sprites.draw(gameDisplay)
-            elevatorSceneTwo()
-
-
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
+        # Checks for Collision with interactives
         collisions = pygame.sprite.spritecollide(playerelevatorLevel, interactives, True, pygame.sprite.collide_circle)
         if collisions:
             running = False
@@ -3557,19 +3257,20 @@ def elevatorLevel():
         # update the display window...
         pygame.display.update()
 
-        if cutscene ==True:
-            cutscene = False
-            elevatorScenePartOne()
-
 def waitingRoomLevelOne():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
+
+   #Empties all currently drawn sprites
     game_sprites.empty()
     security_spots1.empty()
-
     interactives.empty()
+
+    #adds access to the next level
     interactives.add(bathroomDoor)
 
+    #Creates the Security Spotters and adds them to a sprite group
     security_spot1 = Security(545, 455, 2, 0)
     security_spot2 = Security(750, 400, 3, -1)
     security_spot3 = Security(700, 230, 3, -1)
@@ -3588,11 +3289,11 @@ def waitingRoomLevelOne():
                         ,security_spot10)
 
     game_sprites.add(playerWaitingRoomOne,security_spots1)
+
+    # Creates Wall
     wall_list.empty()
     createWall('waitingRoom')
-    game_sprites.draw(gameDisplay)
 
-    cutscene = True
     running = True
     # create game loop
     while running:
@@ -3606,26 +3307,24 @@ def waitingRoomLevelOne():
                 # check for ESCAPE key
                 if event.key == pygame.K_ESCAPE:
                     quit()
-
-
-
             # check click on window exit button
             if event.type == pygame.QUIT:
                 quitGame()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 print(pygame.mouse.get_pos())
+
         # update all game sprites
         game_sprites.update()
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+       #Checks for Collisions for the interactives
         collisions = pygame.sprite.spritecollide(playerWaitingRoomOne, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
         if collisions:
             running = False
 
-        # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
+        # Checks for Collision with Security
         collisions = pygame.sprite.spritecollide(playerWaitingRoomOne, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
+            #displays black GameOver Screen
             gameDisplay.fill(BLACK)
             message_display('Game Over, Press Escape to Quit', pygame.font.match_font('agencyfb'), 70, color('red'),
                             display_width,
@@ -3649,28 +3348,27 @@ def waitingRoomLevelOne():
                     # check click on window exit button
                     if event.type == pygame.QUIT:
                         quitGame()
-
-
         #draw background image - specify image file and rect to load image
         gameDisplay.blit(bg_img, bg_rect)
+
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
-        if cutscene ==True:
-            cutscene = False
-            waitingRoomOneScene()
 
 def bathroomLevel():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "bathroomFinal.png")).convert()
 
+    # Empties all currently drawn sprites
     game_sprites.empty()
     game_sprites.add(playerBathroom)
-    game_sprites.draw(gameDisplay)
+
+    # Creates Wall
     wall_list.empty()
     createWall('bathroom')
-    cutscene = True
+
     running = True
     # create game loop
     while running:
@@ -3693,20 +3391,16 @@ def bathroomLevel():
         # update all game sprites
         game_sprites.update()
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerBathroom, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
+        # Checks for Collision with interactive
         if collisions:
             bathroomPuzzle()
+            # adds access to the next level
             interactives.add(bathroomDoorExit)
             interactives.remove(bathroomPanel)
-            gameDisplay.blit(bg_img, bg_rect)
-            game_sprites.draw(gameDisplay)
-
-            bathroomScenceTwo()
 
         collisions = pygame.sprite.spritecollide(playerBathroom, interactives, True, pygame.sprite.collide_circle)
-
+        # Checks for Collision with interactives
         if collisions:
             running = False
 
@@ -3717,17 +3411,17 @@ def bathroomLevel():
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
-        if cutscene ==True:
-            cutscene = False
-            bathroomScene()
 
 def waitingRoomLevelTwo():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
+
+    # Empties all currently drawn sprites
     game_sprites.empty()
     security_spots1.empty()
 
-
+    #Creates the Security Spotters and adds them to a sprite group
     security_spot1 = Security(545, 455, 2, 0)
     security_spot2 = Security(750, 400, 3, -1)
     security_spot3 = Security(700, 230, 3, -1)
@@ -3738,19 +3432,21 @@ def waitingRoomLevelTwo():
     security_spot8 = Security(165, 265, 3, -1, -1)
     security_spot9 = Security(521, 240, 1, 1)
     security_spot10 = Security(60, 300, 1, 1)
-
     security_spots1.add(security_spot1, security_spot2, security_spot3,
                         security_spot4, security_spot5, security_spot6,
                         security_spot7, security_spot8, security_spot9
-                        , security_spot10)
+                        ,security_spot10)
 
+    #Adds Player Sprite in level start location, and security spotters
     game_sprites.add(playerWaitingRoomTwo,security_spots1)
-    interactives.add(officeEntrance)
-    game_sprites.draw(gameDisplay)
 
+    #adds access to the next level
+    interactives.add(officeEntrance)
+
+    #Creates Wall
     wall_list.empty()
     createWall('waitingRoom')
-    cutscene = True
+
     running = True
     # create game loop
     while running:
@@ -3769,17 +3465,17 @@ def waitingRoomLevelTwo():
             # check click on window exit button
             if event.type == pygame.QUIT:
                 quitGame()
-        # 'updating' the game
+
         # update all game sprites
         game_sprites.update()
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+
         collisions = pygame.sprite.spritecollide(playerWaitingRoomTwo, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
+        # Checks for Collision with interactive
         if collisions:
-            interaction = "bookshelf"
             running = False
 
+        # Checks for Collision with Security
         collisions = pygame.sprite.spritecollide(playerWaitingRoomTwo, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
             gameDisplay.fill(BLACK)
@@ -3813,22 +3509,23 @@ def waitingRoomLevelTwo():
         # update the display window...
         pygame.display.update()
 
-        if cutscene ==True:
-            cutscene = False
-            waitingRoomSceneTwo()
-
 def officeLevel():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "mainOffice.png")).convert()
+
+    # Empties all currently drawn sprites
     game_sprites.empty()
+    interactives.empty()
 
     game_sprites.add(playerOffice)
-    interactives.empty()
+
     interactives.add(officeDesk)
-    game_sprites.draw(gameDisplay)
+
+    # Creates Wall
     wall_list.empty()
     createWall('office')
-    cutscene = True
+
     running = True
     # create game loop
     while running:
@@ -3852,20 +3549,17 @@ def officeLevel():
         # update all game sprites
         game_sprites.update()
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+        # Checks for Collision with Desk
         collisions = pygame.sprite.spritecollide(playerOffice, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
         if collisions:
-            interaction = "bookshelf"
-            # add rect for bg - helps locate background
-
+            #must touch desk to continue the game
             print('get out')
             # draw background image - specify image file and rect to load image
             interactives.add(officeExit)
 
-
+        # Checks for Collision with interactives
         collisions = pygame.sprite.spritecollide(playerOffice, interactives, True, pygame.sprite.collide_circle)
-        # check collisions for game window
+
         if collisions:
 
             running = False
@@ -3882,16 +3576,16 @@ def officeLevel():
         # update the display window...
         pygame.display.update()
 
-        if cutscene ==True:
-            cutscene = False
-            officeScene()
-
 def waitingRoomLevelThree():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
+
+    # Empties all currently drawn sprites
     game_sprites.empty()
     security_spots1.empty()
 
+    #Creates Security Spots for Current Level
     security_spot1 = Security(545, 455, 2, 0)
     security_spot2 = Security(750, 400, 3, -1)
     security_spot3 = Security(700, 230, 3, -1)
@@ -3913,6 +3607,7 @@ def waitingRoomLevelThree():
     interactives.empty()
     interactives.add(elevatorDoorToBasement)
 
+    # Creates Wall
     wall_list.empty()
     createWall('waitingRoom')
 
@@ -3948,7 +3643,7 @@ def waitingRoomLevelThree():
 
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        collisions = pygame.sprite.spritecollide(playerWaitingRoomThree, security_spots1, True, pygame.sprite.collide_circle)
+        collisions = pygame.sprite.spritecollide(playerBasementThree, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
             gameDisplay.fill(BLACK)
             message_display('Game Over, Press Escape to Quit', pygame.font.match_font('agencyfb'), 70, color('red'),
@@ -3984,10 +3679,15 @@ def waitingRoomLevelThree():
 
 def basementLevelOne():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "basementRoom1fix.png")).convert()
     game_sprites.empty()
     security_spots1.empty()
 
+
+    game_sprites.add(playerBasementOne)
+
+    # Creates Security Spots for Current Level
     security_spot1 = Security(220, 440, 1, 1)
     security_spot2 = Security(430, 380, 3, 1)
     security_spot3 = Security(500, 380, 1, 1)
@@ -4002,18 +3702,16 @@ def basementLevelOne():
                         security_spot7)
 
     game_sprites.add(playerBasementOne,security_spots1)
-    game_sprites.draw(gameDisplay)
-    basementOneScene()
+
 
     interactives.empty()
     puzzleInteractions.add(basementPuzzle1Correct)
     puzzleInteractionsW.add(basementPuzzle1Wrong)
 
-
-
+    # Creates Wall
     wall_list.empty()
     createWall('basement1')
-    cutscene = True
+
     running = True
     # create game loop
     while running:
@@ -4103,6 +3801,7 @@ def basementLevelOne():
                             display_width,
                             display_height, True)
 
+
             while running:
                 # check loop is running at set speed
                 clock.tick(FPS)
@@ -4130,18 +3829,16 @@ def basementLevelOne():
         # update the display window...
         pygame.display.update()
 
-        if cutscene == True:
-            cutscene = False
-            basementTwoScene()
-
 def basementLevelTwo():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "basementRoom2.png")).convert()
     game_sprites.empty()
     security_spots1.empty()
     wrongDoor.empty()
     correctDoor.empty()
 
+    #Creates Security Spots for Current Level
     security_spot1 = Security(315, 330, 3, -1,-1)
     security_spot2 = Security(470, 500, 2, 1)
     security_spot3 = Security(460, 220, 3, -1,-1)
@@ -4156,19 +3853,14 @@ def basementLevelTwo():
 
 
     game_sprites.add(playerBasementTwo,security_spots1)
-    game_sprites.draw(gameDisplay)
-
-
     interactives.empty()
     puzzleInteractions.add(basementDoorTwoCorrect)
     puzzleInteractionsW.add(basementDoorTwoWrong)
 
-
-
-
+    # Creates Wall
     wall_list.empty()
     createWall('basement2')
-    cutscene = True
+
     running = True
     # create game loop
     while running:
@@ -4195,7 +3887,7 @@ def basementLevelTwo():
         game_sprites.update()
 
         collisions = pygame.sprite.spritecollide(playerBasementTwo, puzzleInteractions, True, pygame.sprite.collide_circle)
-        # check collisions for game window
+        # Checks for Collision with interactive
         if collisions:
             basementPuzzleTwo()
             correctDoor.add(basementDoorTwoCorrect)
@@ -4203,17 +3895,13 @@ def basementLevelTwo():
             game_sprites.add(playerBasementOne, security_spots1)
 
 
-
-        collisions = pygame.sprite.spritecollide(playerBasementTwo, puzzleInteractionsW, True,
-                                                 pygame.sprite.collide_circle)
-        # check collisions for game window
+        collisions = pygame.sprite.spritecollide(playerBasementTwo, puzzleInteractionsW, True,pygame.sprite.collide_circle)
+        # Checks for Collision with interactive
         if collisions:
             basementPuzzleTwo()
 
             game_sprites.empty()
             game_sprites.add(playerBasementTwo, security_spots1)
-
-
             wrongDoor.add(basementDoorTwoWrong)
 
         # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
@@ -4229,6 +3917,7 @@ def basementLevelTwo():
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
         collisions = pygame.sprite.spritecollide(playerBasementTwo, wrongDoor, True, pygame.sprite.collide_circle)
         if collisions:
+            #Displays Game Over Screen
             gameDisplay.fill(BLACK)
             message_display('Game Over, Press Escape to Quit', pygame.font.match_font('agencyfb'), 70, color('red'), display_width,
                             display_height, True)
@@ -4262,22 +3951,21 @@ def basementLevelTwo():
         # update the display window...
         pygame.display.update()
 
-        if cutscene ==True:
-            cutscene = False
-            basementTwoScene()
-
 def basementLevelThree():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "basementRoom3.png")).convert()
+
+    # Empties all currently drawn sprites
     game_sprites.empty()
     security_spots1.empty()
-
     interactives.empty()
     correctDoor.empty()
     wrongDoor.empty()
     puzzleInteractionsW.empty()
     puzzleInteractions.empty()
 
+    # Creates Security Spots for Current Level
     security_spot1 = Security(355, 400, 1, -1)
     security_spot2 = Security(470, 490, 2, 1)
     security_spot3 = Security(460, 160, 3, -1, -1)
@@ -4290,15 +3978,16 @@ def basementLevelThree():
                         security_spot4, security_spot5, security_spot6,
                         security_spot7)
 
+    game_sprites.add(basementDoorThree)
     puzzleInteractions.add(basementPuzzle3Correct)
     game_sprites.add(playerBasementThree,security_spots1)
-    game_sprites.draw(gameDisplay)
 
+    # Creates Wall
     wall_list.empty()
     createWall('basement3')
 
 
-    cutscence = True
+
     running = True
     # create game loop
     while running:
@@ -4323,33 +4012,31 @@ def basementLevelThree():
         # 'updating' the game
         # update all game sprites
         game_sprites.update()
+
         collisions = pygame.sprite.spritecollide(playerBasementThree, puzzleInteractions, True,
                                                  pygame.sprite.collide_circle)
         # check collisions for game window
         if collisions:
+            game_sprites.empty()
             basementPuzzleThree()
 
-            game_sprites.empty()
+            #Recreates the Sprites after completing the puzzles
             game_sprites.add(playerBasementThree, security_spots1)
-
+            #Adds the correct door interaction
             correctDoor.add(basementDoorThree)
 
-        if cutscence == True:
-            cutscence
-            basementThreeScene()
-
-        # check collisions for game window
 
 
-        # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+
+        #Checks for Collision with Correct Door
         collisions = pygame.sprite.spritecollide(playerBasementThree, correctDoor, True, pygame.sprite.collide_circle)
-        # check collisions for game window
         if collisions:
-
             running = False
 
+        #Checks for Collision security cameras
         collisions = pygame.sprite.spritecollide(playerBasementThree, security_spots1, True, pygame.sprite.collide_circle)
         if collisions:
+            #displays black GameOver Screen
             gameDisplay.fill(BLACK)
             message_display('Game Over, press Escape to Quit', pygame.font.match_font('agencyfb'), 115, color('red'),
                             display_width,
@@ -4374,6 +4061,7 @@ def basementLevelThree():
                     if event.type == pygame.QUIT:
                         quitGame()
 
+        #Checks for Collision with Wrong Door
         collisions = pygame.sprite.spritecollide(playerBasementThree, wrongDoor, True, pygame.sprite.collide_circle)
         if collisions:
             gameDisplay.fill(BLACK)
@@ -4407,18 +4095,18 @@ def basementLevelThree():
         game_sprites.draw(gameDisplay)
         # update the display window...
         pygame.display.update()
-        if cutscence == True:
-            cutscence
-            basementThreeScene()
 
 def FinalBossRoom():
 
+    #Loads Level Background
     bg_img = pygame.image.load(os.path.join(img_dir, "serverRoom.png")).convert()
-    game_sprites.remove(playerBasementThree)
-    game_sprites.add(playerFinal)
+    #Empties current Sprites groups
+    game_sprites.empty()
     interactives.empty()
 
+    game_sprites.add(playerFinal)
 
+    # Creates Walls
     wall_list.empty()
     createWall('FinalRoom')
 
@@ -4469,10 +4157,9 @@ def FinalBossRoom():
         pygame.display.update()
 
 def ending():
-    global IntroBackground
-    IntroBackground = pygame.image.load(os.path.join(img_dir, 'peacefulEnd.png')).convert()
 
-    game_sprites.empty()
+    bg_img = pygame.image.load(os.path.join(img_dir, "officeLevelNew.png")).convert()
+
     running = True
     # create game loop
     while running:
@@ -4496,17 +4183,28 @@ def ending():
         game_sprites.update()
 
         # add check for collision - bookshelf and player sprite (False = hit object is not deleted from game window)
+        collisions = pygame.sprite.spritecollide(player, interactives, True, pygame.sprite.collide_circle)
+        # check collisions for game window
+        if collisions:
+            interaction = "bookshelf"
+            # add rect for bg - helps locate background
+            gameDisplay.fill(BLACK)
+            # draw background image - specify image file and rect to load image
 
+
+        else:
+            interaction = "none"
+            # draw
+            gameDisplay.fill(BLACK)
 
         # add check for collision - security spots and player sprite (False = hit object is not deleted from game window)
-        wallpaper(IntroBackground,0,0)
+        collisions = pygame.sprite.spritecollide(player, security_spots1, True, pygame.sprite.collide_circle)
+        if collisions:
+            print('gotcha')
 
+        #draw background image - specify image file and rect to load image
+        gameDisplay.blit(bg_img, bg_rect)
 
-        dialogue = getText(470, 473)
-        displayDialogue(dialogue,'top')
-        continueDialogue()
-
-        running = False
         # draw all sprites to the game window
         game_sprites.draw(gameDisplay)
         # update the display window...
@@ -4517,237 +4215,233 @@ def ending():
     mouse_pos = pygame.mouse.get_pos()
     print(mouse_pos)
 
+#Running Through the Game
+mainMenu()
+lobbyLevel()
 
-while True:
+#lever coordinates for Elevator Puzzle
+leverWidth = 60
+leverHeight = 70
+leverY = 500
 
-    #mainMenu()
-    #lobbyLevel()
-    
-    #lever coordinates
-    leverWidth = 60
-    leverHeight = 70
-    leverY = 500
-    
-    lever1X = 75
-    lever2X = 200
-    lever3X = 325
-    lever4X = 450
-    
-    lightX = 675
-    
-    light1Y = 45
-    light2Y = 160
-    light3Y = 275
-    light4Y = 395
-    
-    
-    lightRowOneY = 90
-    lightRowTwoY = 205
-    
-    #Levers
-    leverOne = Lever(lever1X,leverY)
-    leverTwo = Lever(lever2X,leverY)
-    leverThree = Lever(lever3X,leverY)
-    leverFour = Lever(lever4X,leverY)
-    
-    lightOne = Light(lightX,light1Y)
-    lightTwo = Light(lightX,light2Y)
-    lightThree = Light(lightX,light3Y)
-    lightFour = Light(lightX,light4Y)
-    
-    
-    
-    
-    #elevatorLevel()
-    #puzzleReset()
-    
-    waitingRoomLevelOne()
-    
-    leverWidth = 60
-    leverHeight = 70
-    leverY = 500
-    
-    
-    lever1X = 75
-    lever2X = 190
-    lever3X = 320
-    lever4X = 440
-    lever5X = 560
-    lever6X = 680
-    
-    lightRowOneY = 90
-    lightRowTwoY = 205
-    
-    light1X = 83
-    light2X = 160
-    light3X = 237
-    
-    leverOne = Lever(lever1X, leverY)
-    leverTwo = Lever(lever2X, leverY)
-    leverThree = Lever(lever3X, leverY)
-    leverFour = Lever(lever4X, leverY)
-    leverFive = Lever(lever5X, leverY)
-    leverSix = Lever(lever6X, leverY)
-    
-    lightOne = Light(light1X, lightRowOneY)
-    lightTwo = Light(light2X, lightRowOneY)
-    lightThree = Light(light3X, lightRowOneY)
-    lightFour = Light(light1X, lightRowTwoY)
-    lightFive = Light(light2X, lightRowTwoY)
-    lightSix = Light(light3X, lightRowTwoY)
-    
-    
-    interactives.add(bathroomPanel)
-    bathroomLevel()
-    puzzleReset()
-    
-    
-    
-    interactives.add(officeEntrance)
-    waitingRoomLevelTwo()
-    officeLevel()
-    waitingRoomLevelThree()
-    
-    #lever coordinates for basementPuzzle
-    leverWidth = 60
-    leverHeight = 70
-    leverY = 500
-    
-    lever1X = 75
-    lever2X = 175
-    lever3X = 275
-    lever4X = 375
-    lever5X = 475
-    lever6X = 575
-    
-    #light coordinates
-    lightX = 675
-    
-    light1Y = 15
-    light2Y = 90
-    light3Y = 170
-    light4Y = 245
-    light5Y = 320
-    light6Y = 400
-    
-    
-    leverOne = Lever(lever1X, leverY)
-    leverTwo = Lever(lever2X, leverY)
-    leverThree = Lever(lever3X, leverY)
-    leverFour = Lever(lever4X, leverY)
-    leverFive = Lever(lever5X, leverY)
-    leverSix = Lever(lever6X, leverY)
-    
-    lightOne = Light(lightX,light1Y)
-    lightTwo = Light(lightX,light2Y)
-    lightThree = Light(lightX,light3Y)
-    lightFour = Light(lightX,light4Y)
-    lightFive = Light(lightX,light5Y)
-    lightSix = Light(lightX,light6Y)
-    
-    
-    
-    puzzleReset()
-    basementLevelOne()
-    puzzleReset()
-    #lever coordinates
-    leverWidth = 60
-    leverHeight = 70
-    leverY = 500
-    
-    lever1X = 25
-    lever2X = 125
-    lever3X = 225
-    lever4X = 325
-    lever5X = 425
-    lever6X = 525
-    lever7X = 625
-    lever8X = 725
-    
-    #light coordinates
-    lightX = 675
-    
-    light1Y = 10
-    light2Y = 70
-    light3Y = 130
-    light4Y = 190
-    light5Y = 250
-    light6Y = 310
-    light7Y = 370
-    light8Y = 430
-    
-    leverOne = Lever(lever1X,leverY)
-    leverTwo = Lever(lever2X,leverY)
-    leverThree = Lever(lever3X,leverY)
-    leverFour = Lever(lever4X,leverY)
-    leverFive = Lever(lever5X,leverY)
-    leverSix = Lever(lever6X,leverY)
-    leverSeven = Lever(lever7X,leverY)
-    leverEight = Lever(lever8X,leverY)
-    
-    lightOne = Light(lightX,light1Y)
-    lightTwo = Light(lightX,light2Y)
-    lightThree = Light(lightX,light3Y)
-    lightFour = Light(lightX,light4Y)
-    lightFive = Light(lightX,light5Y)
-    lightSix = Light(lightX,light6Y)
-    lightSeven = Light(lightX,light7Y)
-    lightEight = Light(lightX,light8Y)
-    
+lever1X = 75
+lever2X = 200
+lever3X = 325
+lever4X = 450
 
-    basementLevelTwo()
-    puzzleReset()
-    
-    
-    
-    leverWidth = 60
-    leverHeight = 70
-    leverY = 500
-    
-    lever1X = 25
-    lever2X = 100
-    lever3X = 175
-    lever4X = 250
-    lever5X = 325
-    lever6X = 400
-    lever7X = 475
-    lever8X = 550
-    lever9X = 625
-    lever10X = 700
-    
-    leverOne = Lever(lever1X,leverY)
-    leverTwo = Lever(lever2X,leverY)
-    leverThree = Lever(lever3X,leverY)
-    leverFour = Lever(lever4X,leverY)
-    leverFive = Lever(lever5X,leverY)
-    leverSix = Lever(lever6X,leverY)
-    leverSeven = Lever(lever7X,leverY)
-    leverEight = Lever(lever8X,leverY)
-    leverNine = Lever(lever9X, leverY)
-    leverTen = Lever(lever10X, leverY)
-    
-    #light coordinates
-    lightX = 675
-    
-    light1Y = 10
-    light2Y = 70
-    light3Y = 130
-    light4Y = 190
-    light5Y = 250
-    light6Y = 310
-    light7Y = 370
-    light8Y = 430
-    
-    lightOne = Light(lightX,light1Y)
-    lightTwo = Light(lightX,light2Y)
-    lightThree = Light(lightX,light3Y)
-    lightFour = Light(lightX,light4Y)
-    lightFive = Light(lightX,light5Y)
-    lightSix = Light(lightX,light6Y)
-    lightSeven = Light(lightX,light7Y)
-    lightEight = Light(lightX,light8Y)
-    
-    
-    basementLevelThree()
-    FinalBossRoom()
-    ending()
+lightX = 675
+
+light1Y = 45
+light2Y = 160
+light3Y = 275
+light4Y = 395
+
+
+lightRowOneY = 90
+lightRowTwoY = 205
+
+#Levers for Elevator
+leverOne = Lever(lever1X,leverY)
+leverTwo = Lever(lever2X,leverY)
+leverThree = Lever(lever3X,leverY)
+leverFour = Lever(lever4X,leverY)
+
+lightOne = Light(lightX,light1Y)
+lightTwo = Light(lightX,light2Y)
+lightThree = Light(lightX,light3Y)
+lightFour = Light(lightX,light4Y)
+
+#elevatorLevel
+elevatorLevel()
+puzzleReset()
+
+waitingRoomLevelOne()
+
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 75
+lever2X = 190
+lever3X = 320
+lever4X = 440
+lever5X = 560
+lever6X = 680
+
+lightRowOneY = 90
+lightRowTwoY = 205
+
+light1X = 83
+light2X = 160
+light3X = 237
+
+leverOne = Lever(lever1X, leverY)
+leverTwo = Lever(lever2X, leverY)
+leverThree = Lever(lever3X, leverY)
+leverFour = Lever(lever4X, leverY)
+leverFive = Lever(lever5X, leverY)
+leverSix = Lever(lever6X, leverY)
+
+lightOne = Light(light1X, lightRowOneY)
+lightTwo = Light(light2X, lightRowOneY)
+lightThree = Light(light3X, lightRowOneY)
+lightFour = Light(light1X, lightRowTwoY)
+lightFive = Light(light2X, lightRowTwoY)
+lightSix = Light(light3X, lightRowTwoY)
+
+
+#bathroomLevel
+bathroomLevel()
+puzzleReset()
+
+interactives.add(officeEntrance)
+waitingRoomLevelTwo()
+officeLevel()
+waitingRoomLevelThree()
+
+#lever coordinates for basement puzzle one
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 75
+lever2X = 175
+lever3X = 275
+lever4X = 375
+lever5X = 475
+lever6X = 575
+
+#light coordinates
+lightX = 675
+
+light1Y = 15
+light2Y = 90
+light3Y = 170
+light4Y = 245
+light5Y = 320
+light6Y = 400
+
+
+leverOne = Lever(lever1X, leverY)
+leverTwo = Lever(lever2X, leverY)
+leverThree = Lever(lever3X, leverY)
+leverFour = Lever(lever4X, leverY)
+leverFive = Lever(lever5X, leverY)
+leverSix = Lever(lever6X, leverY)
+
+lightOne = Light(lightX,light1Y)
+lightTwo = Light(lightX,light2Y)
+lightThree = Light(lightX,light3Y)
+lightFour = Light(lightX,light4Y)
+lightFive = Light(lightX,light5Y)
+lightSix = Light(lightX,light6Y)
+
+
+
+puzzleReset()
+basementLevelOne()
+
+#lever coordinates for Basement two Puzzle
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 25
+lever2X = 125
+lever3X = 225
+lever4X = 325
+lever5X = 425
+lever6X = 525
+lever7X = 625
+lever8X = 725
+
+#light coordinates
+lightX = 675
+
+light1Y = 10
+light2Y = 70
+light3Y = 130
+light4Y = 190
+light5Y = 250
+light6Y = 310
+light7Y = 370
+light8Y = 430
+
+
+
+leverOne = Lever(lever1X,leverY)
+leverTwo = Lever(lever2X,leverY)
+leverThree = Lever(lever3X,leverY)
+leverFour = Lever(lever4X,leverY)
+leverFive = Lever(lever5X,leverY)
+leverSix = Lever(lever6X,leverY)
+leverSeven = Lever(lever7X,leverY)
+leverEight = Lever(lever8X,leverY)
+
+lightOne = Light(lightX,light1Y)
+lightTwo = Light(lightX,light2Y)
+lightThree = Light(lightX,light3Y)
+lightFour = Light(lightX,light4Y)
+lightFive = Light(lightX,light5Y)
+lightSix = Light(lightX,light6Y)
+lightSeven = Light(lightX,light7Y)
+lightEight = Light(lightX,light8Y)
+
+
+
+basementLevelTwo()
+puzzleReset()
+
+
+#lever coordinates for basement puzzle three
+leverWidth = 60
+leverHeight = 70
+leverY = 500
+
+lever1X = 25
+lever2X = 100
+lever3X = 175
+lever4X = 250
+lever5X = 325
+lever6X = 400
+lever7X = 475
+lever8X = 550
+lever9X = 625
+lever10X = 700
+
+leverOne = Lever(lever1X,leverY)
+leverTwo = Lever(lever2X,leverY)
+leverThree = Lever(lever3X,leverY)
+leverFour = Lever(lever4X,leverY)
+leverFive = Lever(lever5X,leverY)
+leverSix = Lever(lever6X,leverY)
+leverSeven = Lever(lever7X,leverY)
+leverEight = Lever(lever8X,leverY)
+leverNine = Lever(lever9X, leverY)
+leverTen = Lever(lever10X, leverY)
+
+#light coordinates
+lightX = 675
+
+light1Y = 10
+light2Y = 70
+light3Y = 130
+light4Y = 190
+light5Y = 250
+light6Y = 310
+light7Y = 370
+light8Y = 430
+
+lightOne = Light(lightX,light1Y)
+lightTwo = Light(lightX,light2Y)
+lightThree = Light(lightX,light3Y)
+lightFour = Light(lightX,light4Y)
+lightFive = Light(lightX,light5Y)
+lightSix = Light(lightX,light6Y)
+lightSeven = Light(lightX,light7Y)
+lightEight = Light(lightX,light8Y)
+
+
+basementLevelThree()
+FinalBossRoom()
+ending()
